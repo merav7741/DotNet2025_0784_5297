@@ -18,11 +18,11 @@ internal class SaleImplementation : ISale
         {
             throw new InvalidOperationException($"!!!מבצע זה כבר קיים");
         }
-        int newId = Config.NextSaleId; 
+        int newId = Config.NextSaleId;
         Sale newSale = item with { Id = newId };
         DataSource.sales.Add(newSale);
 
-        return newId; 
+        return newId;
     }
 
     /// <summary>

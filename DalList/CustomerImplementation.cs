@@ -1,5 +1,6 @@
 ﻿using DO;
 using DalApi;
+using static Dal.DataSource;
 
 namespace Dal
 {
@@ -12,10 +13,13 @@ namespace Dal
         /// <returns></returns>
         public int Create(Customer item)
         {
+            if (item.Id != null && DataSource.customers.Any(s => s.Id == item.Id))
+            {
+                throw new InvalidOperationException($"!!!מוצר זה כבר קיים");
+            }
             DataSource.customers.Add(item);
+
             return item.Id;
-
-
         }
         /// <summary>
         /// /פונקציה למחיקת לקוח
@@ -23,12 +27,13 @@ namespace Dal
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            foreach (Customer customer in DataSource.customers)
-            {
-                if (customer.Id == id)
-                    DataSource.customers.Remove(customer);
-            }
+            var customerToDelete = DataSource.customers.FirstOrDefault(Customer => Customer.Id == id);
 
+            if (customerToDelete == null)
+            {
+                throw new InvalidOperationException($"!!!מוצר זה לא נמצא");
+            }
+            DataSource.customers.Remove(customerToDelete);
         }
         /// <summary>
         /// פונקציה שמחזירה לקוח על פי id
@@ -58,15 +63,22 @@ namespace Dal
         /// <param name="item"></param>
         public void Update(Customer item)
         {
+            bool f = false;
             foreach (Customer customer in DataSource.customers)
             {
                 if (customer.Id == item.Id)
                 {
+                    f = true;
                     DataSource.customers.Remove(customer);
-                    DataSource.customers.Add(item);
                 }
-
             }
+            if (f)
+            {
+                DataSource.customers.Add(item);
+                return;
+            }
+            throw new Exception("לא נמצע מוצר זהה לעדכון");
+
         }
     }
 }
