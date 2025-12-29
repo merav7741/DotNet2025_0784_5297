@@ -17,15 +17,16 @@ internal class ProductImplementation : IProduct
     /// <returns></returns>
     public int Create(Product item)
     {
-        if (item.Id != null && DataSource.products.Any(s => s.Id == item.Id))
+        for (int i = 0; i < DataSource.products.Count; i++)
         {
-            throw new InvalidOperationException($"!!!מוצר זה כבר קיים");
+            if (DataSource.products[i] != null && DataSource.products[i].Id == item.Id)
+            {
+                throw new InvalidOperationException("לקוח זה כבר קיים ברשימת המוצרים");
+            }
         }
-        int newId = Config.NextProduct;
-        Product newProduct = item with { Id = newId };
-        DataSource.products.Add(newProduct);
 
-        return newId;
+        DataSource.products.Add(item);
+        return item.Id;
     }
 
     /// <summary>

@@ -1,6 +1,6 @@
 ﻿using DO;
 using DalApi;
-using static Dal.DataSource;
+
 
 namespace Dal
 {
@@ -13,12 +13,15 @@ namespace Dal
         /// <returns></returns>
         public int Create(Customer item)
         {
-            if (item.Id != null && DataSource.customers.Any(s => s.Id == item.Id))
+            for (int i = 0; i < DataSource.customers.Count; i++)
             {
-                throw new InvalidOperationException($"!!!מוצר זה כבר קיים");
+                if (DataSource.customers[i] != null && DataSource.customers[i].Id == item.Id)
+                {
+                    throw new InvalidOperationException("לקוח זה כבר קיים ברשימת הלקוחות");
+                }
             }
-            DataSource.customers.Add(item);
 
+            DataSource.customers.Add(item);
             return item.Id;
         }
         /// <summary>
@@ -27,13 +30,27 @@ namespace Dal
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            var customerToDelete = DataSource.customers.FirstOrDefault(Customer => Customer.Id == id);
+            //var customerToDelete = DataSource.customers.FirstOrDefault(Customer => Customer.Id == id);
 
-            if (customerToDelete == null)
+            //if (customerToDelete == null)
+            //{
+            //    throw new InvalidOperationException($"!!!מוצר זה לא נמצא");
+            //}
+            //DataSource.customers.Remove(customerToDelete);
+
+            bool found = false;
+            for (int i = 0; i < DataSource.customers.Count; i++)
             {
-                throw new InvalidOperationException($"!!!מוצר זה לא נמצא");
+                if (DataSource.customers[i] != null && DataSource.customers[i].id == id)
+                {
+                    DataSource.customers.Remove(DataSource.customers[i]);
+                    found = true;
+                }
             }
-            DataSource.customers.Remove(customerToDelete);
+
+            if (!found)
+
+                throw new InvalidOperationException("הלקוח לא נמצא למחיקה");
         }
         /// <summary>
         /// פונקציה שמחזירה לקוח על פי id

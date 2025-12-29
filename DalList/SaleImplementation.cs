@@ -14,15 +14,16 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public int Create(Sale item)
     {
-        if (item.Id != null && DataSource.sales.Any(s => s.Id == item.Id))
+        for (int i = 0; i < DataSource.sales.Count; i++)
         {
-            throw new InvalidOperationException($"!!!מבצע זה כבר קיים");
+            if (DataSource.sales[i] != null && DataSource.sales[i].Id == item.Id)
+            {
+                throw new InvalidOperationException("לקוח זה כבר קיים ברשימת מכירות");
+            }
         }
-        int newId = Config.NextSaleId;
-        Sale newSale = item with { Id = newId };
-        DataSource.sales.Add(newSale);
 
-        return newId;
+        DataSource.sales.Add(item);
+        return item.Id;
     }
 
     /// <summary>

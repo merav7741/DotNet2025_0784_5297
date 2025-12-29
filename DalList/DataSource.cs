@@ -20,12 +20,12 @@ namespace Dal
                 get { return _productId++; }
             }
 
-            private const int InitialSaleId = 1000; // Starting ID
+            private const int InitialSaleId = 1000; 
             private static int _nextSaleId = InitialSaleId;
 
             public static int NextSaleId
             {
-                get { return _nextSaleId++; } // Return current ID and increment
+                get { return _nextSaleId++; } 
             }
 
         }
