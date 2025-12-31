@@ -7,27 +7,24 @@ namespace DalTest
 {
     internal class Program
     {
-        private static IProduct s_dalProduct;
-        private static ICustomer s_dalCustomer;
-        private static ISale s_dalSale;
+        static readonly IDal s_dal = new Dal.DalList();
+       
         private static void Main(string[] args)
         {
             try
             {
+                Console.WriteLine("שלום ןברכה");
+                Initialization.Initialize(s_dal);
 
-                s_dalProduct = null;
-                s_dalCustomer = null;
-                s_dalSale = null;
-
-                Initialization.Initialize(s_dalProduct, s_dalCustomer, s_dalSale);
-                SubMenu();
+               
+                //SubMenu();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-        private static void SubMenu<T>(ICrud<T> crud, string title, Add add, Update update) { }
+        //private static void SubMenu<T>(ICrud<T> crud, string title, Add add, Update update) { }
 
         private static void ProductMenu() { }
 
@@ -67,9 +64,9 @@ namespace DalTest
 
         private static void Delete<T>(ICrud<T> crud) { }
 
-        public static int PrintMainMenu() { }
+        //public static int PrintMainMenu() { }
 
-        public static int PrintSubMenu(string item) { }
+        //public static int PrintSubMenu(string item) { }
 
         private static Product AskProduct(int code = 0)
         {

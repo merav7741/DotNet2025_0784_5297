@@ -10,7 +10,7 @@ namespace DalApi
     {
         IProduct Product { get; }
         ICustomer Customer { get; }
-        ISale  sale { get; }
+        ISale  Sale { get; }
 
     }
 }

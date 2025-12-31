@@ -1,12 +1,13 @@
 ﻿using DalApi;
 
+
 namespace Dal
 {
-    internal class DalList :IDal
+    public class DalList :IDal
     {
-        public IProduct product => new ProductImplementation();
-        public ISale sale => new SaleImplementation();
-        public ICustomer customer => new CustomerImplementation();
+        public IProduct Product => new ProductImplementation();
+        public ISale Sale => new SaleImplementation();
+        public ICustomer Customer => new CustomerImplementation();
 
     }
 }

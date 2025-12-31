@@ -41,7 +41,7 @@ namespace Dal
             bool found = false;
             for (int i = 0; i < DataSource.customers.Count; i++)
             {
-                if (DataSource.customers[i] != null && DataSource.customers[i].id == id)
+                if (DataSource.customers[i] != null && DataSource.customers[i].Id == id)
                 {
                     DataSource.customers.Remove(DataSource.customers[i]);
                     found = true;
