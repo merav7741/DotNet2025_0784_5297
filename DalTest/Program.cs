@@ -5,31 +5,21 @@ using System.Net.Http.Headers;
 using System.Xml.Linq;
 namespace DalTest
 {
+    /// <summary>
+    /// מחלקת התוכנית הראשית
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// מופע של Dal לגישה לנתונים
+        /// </summary>
         static readonly IDal s_dal = new Dal.DalList();
-
         private static void Main(string[] args)
-        {
-            try
-            {
-
-                Initialization.Initialize(s_dal);
-
-
-                //SubMenu();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
-
-        private static void Read<T>(ICrud<T> crud)
         {
             int choice;
             try
             {
+                Initialization.Initialize(s_dal);
                 while ((choice = PrintMainMenu()) != 0)
                 {
                     switch (choice)
@@ -46,12 +36,15 @@ namespace DalTest
                     }
                 }
             }
-            catch (Exception e)
-            { Console.WriteLine(e.Message); }
-
-
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }
-
+        /// <summary>
+        /// פונקציה לתפריט הראשי
+        /// </summary>
+        /// <returns></returns>
         public static int PrintMainMenu()
         {
             int choice;
@@ -59,7 +52,11 @@ namespace DalTest
             int.TryParse(Console.ReadLine(), out choice);
             return choice;
         }
-
+        /// <summary>
+        /// פונקציה לתפריט המשני
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public static int PrintSubMenu(string item)
         {
             int choice;
@@ -67,6 +64,9 @@ namespace DalTest
             int.TryParse(Console.ReadLine(), out choice);
             return choice;
         }
+        /// <summary>
+        /// פונקציה לתפריט מוצרים
+        /// </summary>
         public static void ProductMenu()
         {
             int choice;
@@ -81,26 +81,56 @@ namespace DalTest
                     case 2:
                         UpdateProduct();
                         break;
-                        case 3:
+                    case 3:
                         Read(s_dal.Product!);
-                        break ;
-                        case 4:
+                        break;
+                    case 4:
                         ReadAll(s_dal.Product!);
-                        break ;
-                        case 5:
-                         Delete(s_dal.Product);
-                        break ;
+                        break;
+                    case 5:
+                        Delete(s_dal.Product);
+                        break;
 
 
                 }
-              
+
             } while (choice != 0);
 
-        } 
+        }
+        /// <summary>
+        ///  פונקציה לתפריט לקוחות
+        /// </summary>
         public static void CustomerMenu()
         {
+            int choice;
+            do
+            {
+                choice = PrintMainMenu();
+                switch (choice)
+                {
+                    case 1:
+                        AddCustomer();
+                        break;
+                    case 2:
+                        UpdateCustomer();
+                        break;
+                    case 3:
+                        Read(s_dal.Customer!);
+                        break;
+                    case 4:
+                        ReadAll(s_dal.Customer!);
+                        break;
+                    case 5:
+                        Delete(s_dal.Customer!);
+                        break;
+                }
+
+            } while (choice != 0);
 
         }
+        /// <summary>
+        /// פונקציה לתפריט מכירות
+        /// </summary>
         public static void SaleMenu()
         {
             int choice;
@@ -124,36 +154,95 @@ namespace DalTest
                     case 5:
                         Delete(s_dal.Sale!);
                         break;
-
-
                 }
 
             } while (choice != 0);
 
         }
-        private static void Delete<T>(ICrud<T> crud) { }
-
-        private static void AddProduct()
+        /// <summary>
+        /// פונקציה לקריאת פריט מסוג T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="crud"></param>
+        private static void Read<T>(ICrud<T> crud)
         {
 
-        }
-        private static void AddSale()
-        {
 
         }
-        private static void UpdateProduct() { }
-        private static void UpdateSale()
-        {
-
-        }
+        /// <summary>
+        /// פונקציה לקריאת כל הפריטים מסוג T    
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="icrud"></param>
         private static void ReadAll<T>(ICrud<T> icrud)
         {
             foreach (T item in icrud.ReadAll())
                 if (item != null)
                     Console.WriteLine(item);
         }
-        
+        /// <summary>
+        /// פונקציה למחיקת פריט מסוג T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="crud"></param>
+        private static void Delete<T>(ICrud<T> crud) { }
 
+        /// <summary>
+        /// פונקציה להוספת מוצר
+        /// </summary>
+        private static void AddProduct()
+        {
+            Product product = AskProduct();
+            s_dal.Product.Create(product);
+            int newId = product.Id;
+            Console.WriteLine($"Product added with Id: {newId}");
+        }
+        /// <summary>
+        /// פונקציה להוספת מכירה
+        /// </summary>
+        private static void AddSale()
+        {
+            Sale sale = AskSale();
+            s_dal.Sale.Create(sale);
+            int newId = sale.Id;
+            Console.WriteLine("Sale added with Id: {newId}");
+        }
+        /// <summary>
+        /// פונקציה להוספת לקוח
+        /// </summary>
+        private static void AddCustomer()
+        {
+            Customer customer = Askcustomer();
+            s_dal.Customer.Create(customer);
+            int newId = customer.Id;
+            Console.WriteLine($"Customer added with Id: {newId}");
+        }
+        /// <summary>
+        /// פונקציה לעדכון מוצר
+        /// </summary>
+        private static void UpdateProduct()
+        {
+
+        }
+        /// <summary>
+        /// פונקציה לעדכון מכירה
+        /// </summary>
+        private static void UpdateSale()
+        {
+
+        }
+        /// <summary>
+        /// פונקציה לעדכון לקוח
+        /// </summary>
+        private static void UpdateCustomer()
+        {
+
+        }
+        /// <summary>
+        /// פונקציה לשאילת פרטי מוצר מהמשתמש
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         private static Product AskProduct(int code = 0)
         {
             string name;
@@ -165,15 +254,64 @@ namespace DalTest
             Console.WriteLine("Enter the category: between 0 to 3 ");
             int cat;
             if (!int.TryParse(Console.ReadLine(), out cat)) category = 0;
-
             else
-                category = (Categories)cat;
+                category = Categories.Earring;
             Console.WriteLine("Enter Price");
             if (!double.TryParse(Console.ReadLine(), out price)) price = 10;
             Console.WriteLine("Enter count in stock");
             if (!int.TryParse(Console.ReadLine(), out count)) count = 0;
-
             return new Product(code, name, category, price, count);
+        }
+        /// <summary>
+        /// פונקציה לשאילת פרטי מכירה מהמשתמש
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        private static Sale AskSale(int code = 0)
+        {
+            int ProductId;
+            int QuantityForSale;
+            double SalePrice;
+            bool IsSaleToAllCustomer;
+            DateTime StartSale;
+            DateTime EndSale;
+            Console.WriteLine("Enter the ProductId of the sale");
+            if (!int.TryParse(Console.ReadLine(), out ProductId)) ProductId = 0;
+            Console.WriteLine("Enter the QuantityForSale of the sale");
+            if (!int.TryParse(Console.ReadLine(), out QuantityForSale)) QuantityForSale = 0;
+            Console.WriteLine("Enter SalePrice");
+            if (!double.TryParse(Console.ReadLine(), out SalePrice)) SalePrice = 0;
+            Console.WriteLine("Is Sale To All Customer? true/false");
+            if (!bool.TryParse(Console.ReadLine(), out IsSaleToAllCustomer)) IsSaleToAllCustomer = true;
+            Console.WriteLine("Enter StartSale date (yyyy-MM-dd) or leave empty");
+            string startInput = Console.ReadLine();
+            if (!DateTime.TryParse(startInput, out StartSale)) StartSale = DateTime.MinValuen;
+            Console.WriteLine("Enter EndSale date (yyyy-MM-dd) or leave empty");
+            string endInput = Console.ReadLine();
+            if (!DateTime.TryParse(endInput, out EndSale)) EndSale = DateTime.Now;
+            return new Sale(code, ProductId, QuantityForSale, SalePrice, IsSaleToAllCustomer,
+                StartSale == DateTime.MinValue ? null : StartSale,
+                EndSale == DateTime.Now ? null : EndSale);
+        }
+        /// <summary>
+        /// פונקציה לשאילת פרטי לקוח מהמשתמש
+        /// </summary>
+        /// <returns></returns>
+        private static Customer Askcustomer()
+        {
+            int id;
+            string name;
+            string address;
+            string phone;
+            Console.WriteLine("Enter id of the customer");
+            if (int.TryParse(Console.ReadLine(), out id)) id = 0;
+            Console.WriteLine("Enter name of the customer");
+            name = Console.ReadLine();
+            Console.WriteLine("Enter address of the customer");
+            address = Console.ReadLine();
+            Console.WriteLine("Enter phone of the customer");
+            phone = Console.ReadLine();
+            return new Customer(id, name, address, phone);
         }
 
     }
