@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DalApi;
 
 namespace Dal
 {
-    internal class DalList
+    internal class DalList :IDal
     {
+        public IProduct product => new ProductImplementation();
+        public ISale sale => new SaleImplementation();
+        public ICustomer customer => new CustomerImplementation();
+
     }
 }
