@@ -14,16 +14,16 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public int Create(Sale item)
     {
-        for (int i = 0; i < DataSource.sales.Count; i++)
+        int newId = DataSource.Config.NextSaleId;
+        foreach (Sale? sale in DataSource.sales)
         {
-            if (DataSource.sales[i] != null && DataSource.sales[i].Id == item.Id)
-            {
-                throw new InvalidOperationException("לקוח זה כבר קיים ברשימת מכירות");
-            }
+            if (sale != null && sale.Id == newId)
+                throw new Exception("Sale with this id already exists");
         }
 
-        DataSource.sales.Add(item);
-        return item.Id;
+        Sale newSale = item with { Id = newId };
+        DataSource.sales.Add(newSale);
+        return newId;
     }
 
     /// <summary>
@@ -74,20 +74,10 @@ internal class SaleImplementation : ISale
     /// <param name="item"></param>
     public void Update(Sale item)
     {
-        bool f = false;
-        foreach (Sale sale in DataSource.sales)
+        if (DataSource.sales.Any(c => c?.Id == item.Id))
         {
-            if (sale.Id == item.Id)
-            {
-                f = true;
-                DataSource.sales.Remove(sale);
-            }
+            Delete(item.Id);
         }
-        if (f)
-        {
-            DataSource.sales.Add(item);
-            return;
-        }
-        throw new Exception("לא נמצע מבצע זהה לעדכון");
+        DataSource.sales.Add(item);
     }
 }

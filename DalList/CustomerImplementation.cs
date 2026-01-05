@@ -13,14 +13,13 @@ namespace Dal
         /// <returns></returns>
         public int Create(Customer item)
         {
-            for (int i = 0; i < DataSource.customers.Count; i++)
+            foreach (Customer? customer in DataSource.customers)
             {
-                if (DataSource.customers[i] != null && DataSource.customers[i].Id == item.Id)
+                if (customer != null && customer!.Id == item.Id)
                 {
-                    throw new InvalidOperationException("לקוח זה כבר קיים ברשימת הלקוחות");
+                    throw new Exception("This customer exists in the customers list");
                 }
             }
-
             DataSource.customers.Add(item);
             return item.Id;
         }
@@ -30,20 +29,12 @@ namespace Dal
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            //var customerToDelete = DataSource.customers.FirstOrDefault(Customer => Customer.Id == id);
-
-            //if (customerToDelete == null)
-            //{
-            //    throw new InvalidOperationException($"!!!מוצר זה לא נמצא");
-            //}
-            //DataSource.customers.Remove(customerToDelete);
-
             bool found = false;
-            for (int i = 0; i < DataSource.customers.Count; i++)
+            foreach (Customer? customer in DataSource.customers)
             {
-                if (DataSource.customers[i] != null && DataSource.customers[i].Id == id)
+                if (customer != null && customer.Id == id)
                 {
-                    DataSource.customers.Remove(DataSource.customers[i]);
+                    DataSource.customers.Remove(customer);
                     found = true;
                 }
             }
@@ -59,9 +50,9 @@ namespace Dal
         /// <returns></returns>
         public Customer? Read(int id)
         {
-            foreach (Customer customer in DataSource.customers)
+            foreach (Customer? customer in DataSource.customers)
             {
-                if (customer.Id == id)
+                if (customer?.Id == id)
                     return customer;
             }
             return null;
@@ -80,22 +71,11 @@ namespace Dal
         /// <param name="item"></param>
         public void Update(Customer item)
         {
-            bool f = false;
-            foreach (Customer customer in DataSource.customers)
+            if (DataSource.customers.Any(c => c?.Id == item.Id))
             {
-                if (customer.Id == item.Id)
-                {
-                    f = true;
-                    DataSource.customers.Remove(customer);
-                }
+                Delete(item.Id);
             }
-            if (f)
-            {
-                DataSource.customers.Add(item);
-                return;
-            }
-            throw new Exception("לא נמצע מוצר זהה לעדכון");
-
+            DataSource.customers.Add(item);
         }
     }
 }

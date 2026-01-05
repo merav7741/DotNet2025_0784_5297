@@ -169,7 +169,7 @@ namespace DalTest
             Console.WriteLine("insert id");
             try
             {
-                crud.Read(int.Parse(Console.ReadLine()));
+                Console.WriteLine(crud.Read(int.Parse(Console.ReadLine() ?? "")));
             }
             catch (Exception e)
             {

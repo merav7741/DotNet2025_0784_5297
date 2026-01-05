@@ -17,16 +17,17 @@ internal class ProductImplementation : IProduct
     /// <returns></returns>
     public int Create(Product item)
     {
-        for (int i = 0; i < DataSource.products.Count; i++)
+        int newId = DataSource.Config.NextProduct;
+        foreach (Product? product in DataSource.products)
         {
-            if (DataSource.products[i] != null && DataSource.products[i].Id == item.Id)
+            if (product != null && product!.Id == item.Id)
             {
-                throw new InvalidOperationException("לקוח זה כבר קיים ברשימת המוצרים");
+                throw new Exception("The product exists in the list");
             }
         }
-
-        DataSource.products.Add(item);
-        return item.Id;
+        Product newProduct = item with { Id = newId };
+        DataSource.products.Add(newProduct);
+        return newId;
     }
 
     /// <summary>
@@ -74,22 +75,11 @@ internal class ProductImplementation : IProduct
     /// <param name="item"></param>
     public void Update(Product item)
     {
-        bool f = false;
-        foreach (Product product in DataSource.products)
+        if (DataSource.products.Any(c => c?.Id == item.Id))
         {
-            if (product.Id == item.Id)
-            {
-                f = true;
-                DataSource.products.Remove(product);
-            }
+            Delete(item.Id);
         }
-        if (f)
-        {
-            DataSource.products.Add(item);
-            return;
-        }
-        throw new Exception("לא נמצע מוצר זהה לעדכון");
-
+        DataSource.products.Add(item);
     }
 }
 

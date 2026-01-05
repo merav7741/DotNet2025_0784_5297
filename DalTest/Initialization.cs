@@ -9,17 +9,18 @@ public static class Initialization
    /// רשימה סטטית שתכיל את רשימות הנתונים
    /// </summary>
     private static IDal s_dal;
+    private static List<int> lst=new List<int>();
 
     /// <summary>
     /// פונקציה סטטית  שמייצרת מוצרים
     /// </summary>
     private static void CreateProducts()
     {
-        s_dal.Product.Create(new Product(1,"Heart necklace", DO.Categories.Necklace, 120,20));
-        s_dal.Product.Create(new Product(2, "Heart Bracelet", DO.Categories.Bracelet, 80, 10));
-        s_dal.Product.Create(new Product(3, "Hoop earring", DO.Categories.Earring, 90, 34));
-        s_dal.Product.Create(new Product(4, "Gold watch", DO.Categories.Watch, 350, 3));
-        s_dal.Product.Create(new Product(5, "Pandora ring", DO.Categories.Ring, 110, 12));
+        lst.Add( s_dal.Product.Create(new Product(1,"Heart necklace", DO.Categories.Necklace, 120,20)));
+        lst.Add(s_dal.Product.Create(new Product(2, "Heart Bracelet", DO.Categories.Bracelet, 80, 10)));
+        lst.Add(s_dal.Product.Create(new Product(3, "Hoop earring", DO.Categories.Earring, 90, 34)));
+        lst.Add(s_dal.Product.Create(new Product(4, "Gold watch", DO.Categories.Watch, 350, 3)));
+        lst.Add(s_dal.Product.Create(new Product(5, "Pandora ring", DO.Categories.Ring, 110, 12)));
     }
 
 
