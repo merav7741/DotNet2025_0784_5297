@@ -15,9 +15,12 @@ public static class Initialization
     /// </summary>
     private static void CreateProducts()
     {
-        
+        s_dal.Product.Create(new Product(1,"Heart necklace", DO.Categories.Necklace, 120,20));
+        s_dal.Product.Create(new Product(2, "Heart Bracelet", DO.Categories.Bracelet, 80, 10));
+        s_dal.Product.Create(new Product(2, "Hoop earring", DO.Categories.Earring, 90, 34));
+        s_dal.Product.Create(new Product(2, "Gold watch", DO.Categories.Watch, 350, 3));
+        s_dal.Product.Create(new Product(2, "Pandora ring", DO.Categories.Ring, 110, 12));
     }
-
 
 
     /// <summary>

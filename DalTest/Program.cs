@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Xml.Linq;
 namespace DalTest
 {
-    /// <summary>
+    /// <summary>`
     /// מחלקת התוכנית הראשית
     /// </summary>
     internal class Program
@@ -165,8 +165,16 @@ namespace DalTest
         /// <typeparam name="T"></typeparam>
         /// <param name="crud"></param>
         private static void Read<T>(ICrud<T> crud)
-        {
-
+        {   
+            Console.WriteLine("insert id");
+            try
+            {
+                crud.Read(int.Parse(Console.ReadLine()));
+            }
+            catch (Exception e){
+                Console.WriteLine(e.Message);
+            }
+    
 
         }
         /// <summary>
@@ -185,7 +193,34 @@ namespace DalTest
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="crud"></param>
-        private static void Delete<T>(ICrud<T> crud) { }
+        private static void Delete<T>(ICrud<T> crud)
+        {
+            Console.WriteLine("insert id to remove");
+            crud.Delete(int.Parse(Console.ReadLine()));
+            Console.WriteLine("this is remove");
+        }
+
+        
+        private static void AddSale()
+        {
+            Sale sale = AskSale();
+            s_dal.Sale.Create(sale);
+            int newId = sale.Id;
+            Console.WriteLine("Sale added with Id: {newId}");
+        }
+        /// <summary>
+        /// פונקציה להוספת לקוח
+        /// </summary>
+        private static void AddCustomer()
+        {
+            Customer customer = AskCustomer();
+            s_dal.Customer.Create(customer);
+            int newId = customer.Id;
+            Console.WriteLine($"Customer added with Id: {newId}");
+        }
+        /// <summary>
+        /// פונקציה לעדכון מוצר
+        /// </summary>
 
         /// <summary>
         /// פונקציה להוספת מוצר
@@ -200,42 +235,36 @@ namespace DalTest
         /// <summary>
         /// פונקציה להוספת מכירה
         /// </summary>
-        private static void AddSale()
-        {
-            Sale sale = AskSale();
-            s_dal.Sale.Create(sale);
-            int newId = sale.Id;
-            Console.WriteLine("Sale added with Id: {newId}");
-        }
-        /// <summary>
-        /// פונקציה להוספת לקוח
-        /// </summary>
-        private static void AddCustomer()
-        {
-            Customer customer = Askcustomer();
-            s_dal.Customer.Create(customer);
-            int newId = customer.Id;
-            Console.WriteLine($"Customer added with Id: {newId}");
-        }
-        /// <summary>
-        /// פונקציה לעדכון מוצר
-        /// </summary>
+       
         private static void UpdateProduct()
         {
-
+            Console.WriteLine("insert id for update product");
+            int id=int.Parse(Console.ReadLine());
+            Product product = AskProduct(id);
+            s_dal.Product.Update(product);
+            Console.WriteLine("product update");
         }
         /// <summary>
         /// פונקציה לעדכון מכירה
         /// </summary>
         private static void UpdateSale()
         {
-
+            Console.WriteLine("enter id for update sale");
+            int id= int.Parse(Console.ReadLine());
+            Sale sale = AskSale(id);
+            s_dal.Sale.Update(sale);
+            Console.WriteLine("sale update!");
         }
         /// <summary>
         /// פונקציה לעדכון לקוח
         /// </summary>
         private static void UpdateCustomer()
         {
+            Console.WriteLine("enter id for update customer");
+            int id = int.Parse(Console.ReadLine());
+            Customer customer = AskCustomer(id);
+            s_dal.Customer.Update(customer);
+            Console.WriteLine("sale customer!");
 
         }
         /// <summary>
@@ -285,7 +314,7 @@ namespace DalTest
             if (!bool.TryParse(Console.ReadLine(), out IsSaleToAllCustomer)) IsSaleToAllCustomer = true;
             Console.WriteLine("Enter StartSale date (yyyy-MM-dd) or leave empty");
             string startInput = Console.ReadLine();
-            if (!DateTime.TryParse(startInput, out StartSale)) StartSale = DateTime.MinValuen;
+            if (!DateTime.TryParse(startInput, out StartSale)) StartSale = DateTime.MinValue;
             Console.WriteLine("Enter EndSale date (yyyy-MM-dd) or leave empty");
             string endInput = Console.ReadLine();
             if (!DateTime.TryParse(endInput, out EndSale)) EndSale = DateTime.Now;
@@ -297,7 +326,7 @@ namespace DalTest
         /// פונקציה לשאילת פרטי לקוח מהמשתמש
         /// </summary>
         /// <returns></returns>
-        private static Customer Askcustomer()
+        private static Customer AskCustomer(int code = 0)
         {
             int id;
             string name;
