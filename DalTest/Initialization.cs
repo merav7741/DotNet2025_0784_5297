@@ -17,9 +17,9 @@ public static class Initialization
     {
         s_dal.Product.Create(new Product(1,"Heart necklace", DO.Categories.Necklace, 120,20));
         s_dal.Product.Create(new Product(2, "Heart Bracelet", DO.Categories.Bracelet, 80, 10));
-        s_dal.Product.Create(new Product(2, "Hoop earring", DO.Categories.Earring, 90, 34));
-        s_dal.Product.Create(new Product(2, "Gold watch", DO.Categories.Watch, 350, 3));
-        s_dal.Product.Create(new Product(2, "Pandora ring", DO.Categories.Ring, 110, 12));
+        s_dal.Product.Create(new Product(3, "Hoop earring", DO.Categories.Earring, 90, 34));
+        s_dal.Product.Create(new Product(4, "Gold watch", DO.Categories.Watch, 350, 3));
+        s_dal.Product.Create(new Product(5, "Pandora ring", DO.Categories.Ring, 110, 12));
     }
 
 
@@ -44,8 +44,8 @@ public static class Initialization
         s_dal.Sale.Create(new Sale(1, 1, 1, 150, true, DateTime.Now, DateTime.Now.AddDays(7)));
         s_dal.Sale.Create(new Sale(2, 2, 2, 50, true, DateTime.Now, DateTime.Now.AddDays(10)));
         s_dal.Sale.Create(new Sale(3, 3, 4, 60, true, DateTime.Now, DateTime.Now.AddDays(14)));
-        s_dal.Sale.Create(new Sale(4, null, 3,70 , true, DateTime.Now, DateTime.Now.AddDays(10)));
-        s_dal.Sale.Create(new Sale(5, null, 2, 120, true, DateTime.Now, DateTime.Now.AddDays(10)));
+        s_dal.Sale.Create(new Sale(4, null, 3, 70, true, DateTime.Now, DateTime.Now.AddDays(10)));
+         s_dal.Sale.Create(new Sale(5, null, 2, 120, true, DateTime.Now, DateTime.Now.AddDays(10)));
     }
 
   

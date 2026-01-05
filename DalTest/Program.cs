@@ -16,9 +16,9 @@ namespace DalTest
         static readonly IDal s_dal = new Dal.DalList();
         private static void Main(string[] args)
         {
-            int choice;
             try
             {
+                int choice;
                 Initialization.Initialize(s_dal);
                 while ((choice = PrintMainMenu()) != 0)
                 {
@@ -72,7 +72,7 @@ namespace DalTest
             int choice;
             do
             {
-                choice = PrintMainMenu();
+                choice = PrintSubMenu("product");
                 switch (choice)
                 {
                     case 1:
@@ -105,7 +105,7 @@ namespace DalTest
             int choice;
             do
             {
-                choice = PrintMainMenu();
+                choice = PrintSubMenu("customer");
                 switch (choice)
                 {
                     case 1:
@@ -136,7 +136,7 @@ namespace DalTest
             int choice;
             do
             {
-                choice = PrintMainMenu();
+                choice = PrintSubMenu("sale");
                 switch (choice)
                 {
                     case 1:
@@ -165,16 +165,17 @@ namespace DalTest
         /// <typeparam name="T"></typeparam>
         /// <param name="crud"></param>
         private static void Read<T>(ICrud<T> crud)
-        {   
+        {
             Console.WriteLine("insert id");
             try
             {
                 crud.Read(int.Parse(Console.ReadLine()));
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 Console.WriteLine(e.Message);
             }
-    
+
 
         }
         /// <summary>
@@ -200,7 +201,7 @@ namespace DalTest
             Console.WriteLine("this is remove");
         }
 
-        
+
         private static void AddSale()
         {
             Sale sale = AskSale();
@@ -235,11 +236,11 @@ namespace DalTest
         /// <summary>
         /// פונקציה להוספת מכירה
         /// </summary>
-       
+
         private static void UpdateProduct()
         {
             Console.WriteLine("insert id for update product");
-            int id=int.Parse(Console.ReadLine());
+            int id = int.Parse(Console.ReadLine());
             Product product = AskProduct(id);
             s_dal.Product.Update(product);
             Console.WriteLine("product update");
@@ -250,7 +251,7 @@ namespace DalTest
         private static void UpdateSale()
         {
             Console.WriteLine("enter id for update sale");
-            int id= int.Parse(Console.ReadLine());
+            int id = int.Parse(Console.ReadLine());
             Sale sale = AskSale(id);
             s_dal.Sale.Update(sale);
             Console.WriteLine("sale update!");
