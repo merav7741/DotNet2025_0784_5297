@@ -198,7 +198,7 @@ namespace DalTest
         private static void Delete<T>(ICrud<T> crud)
         {
             Console.WriteLine("insert id to remove");
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
             if (int.TryParse(input, out int id))
             {
                 crud.Delete(id);
@@ -214,8 +214,7 @@ namespace DalTest
         private static void AddSale()
         {
             Sale sale = AskSale();
-            s_dal.Sale.Create(sale);
-            int newId = sale.Id;
+            int newId = s_dal.Sale.Create(sale);
             Console.WriteLine("Sale added with Id: {newId}");
         }
         /// <summary>
@@ -224,8 +223,7 @@ namespace DalTest
         private static void AddCustomer()
         {
             Customer customer = AskCustomer();
-            s_dal.Customer.Create(customer);
-            int newId = customer.Id;
+            int newId = s_dal.Customer.Create(customer);
             Console.WriteLine($"Customer added with Id: {newId}");
         }
         /// <summary>
@@ -238,8 +236,7 @@ namespace DalTest
         private static void AddProduct()
         {
             Product product = AskProduct();
-            s_dal.Product.Create(product);
-            int newId = product.Id;
+            int newId = s_dal.Product.Create(product);
             Console.WriteLine($"Product added with Id: {newId}");
         }
         /// <summary>
@@ -249,7 +246,7 @@ namespace DalTest
         private static void UpdateProduct()
         {
             Console.WriteLine("insert id for update product");
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
 
             if (int.TryParse(input, out int id))
             {
@@ -268,7 +265,7 @@ namespace DalTest
         private static void UpdateSale()
         {
             Console.WriteLine("insert id for update sale");
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
 
             if (int.TryParse(input, out int id))
             {
@@ -287,7 +284,7 @@ namespace DalTest
         private static void UpdateCustomer()
         {
             Console.WriteLine("insert id for update customer");
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
 
             if (int.TryParse(input, out int id))
             {
