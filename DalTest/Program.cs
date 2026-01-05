@@ -197,8 +197,16 @@ namespace DalTest
         private static void Delete<T>(ICrud<T> crud)
         {
             Console.WriteLine("insert id to remove");
-            crud.Delete(int.Parse(Console.ReadLine()));
-            Console.WriteLine("this is remove");
+            string input = Console.ReadLine();
+            if (int.TryParse(input, out int id))
+            {
+                crud.Delete(id);
+                Console.WriteLine("this is remove");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid integer ID.");
+            }
         }
 
 
@@ -240,32 +248,56 @@ namespace DalTest
         private static void UpdateProduct()
         {
             Console.WriteLine("insert id for update product");
-            int id = int.Parse(Console.ReadLine());
-            Product product = AskProduct(id);
-            s_dal.Product.Update(product);
-            Console.WriteLine("product update");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out int id))
+            {
+                Product product = AskProduct(id);
+                s_dal.Product.Update(product);
+                Console.WriteLine("product updated");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid integer ID.");
+            }
         }
         /// <summary>
         /// פונקציה לעדכון מכירה
         /// </summary>
         private static void UpdateSale()
         {
-            Console.WriteLine("enter id for update sale");
-            int id = int.Parse(Console.ReadLine());
-            Sale sale = AskSale(id);
-            s_dal.Sale.Update(sale);
-            Console.WriteLine("sale update!");
+            Console.WriteLine("insert id for update sale");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out int id))
+            {
+                Sale sale = AskSale(id);
+                s_dal.Sale.Update(sale);
+                Console.WriteLine("sale updated");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid integer ID.");
+            }
         }
         /// <summary>
         /// פונקציה לעדכון לקוח
         /// </summary>
         private static void UpdateCustomer()
         {
-            Console.WriteLine("enter id for update customer");
-            int id = int.Parse(Console.ReadLine());
-            Customer customer = AskCustomer(id);
-            s_dal.Customer.Update(customer);
-            Console.WriteLine("sale customer!");
+            Console.WriteLine("insert id for update customer");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out int id))
+            {
+                Customer customer = AskCustomer(id);
+                s_dal.Customer.Update(customer);
+                Console.WriteLine("customer updated");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid integer ID.");
+            }
 
         }
         /// <summary>

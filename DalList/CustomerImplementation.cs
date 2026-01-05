@@ -63,7 +63,7 @@ namespace Dal
         /// <returns></returns>
         public List<Customer> ReadAll()
         {
-            return DataSource.customers == null ? null : DataSource.customers;
+            return DataSource.customers == null ? null :new List<Customer>( DataSource.customers);
         }
         /// <summary>
         /// פונקציה לעדכון פרטי לקוח 

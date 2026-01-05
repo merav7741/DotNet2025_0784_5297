@@ -50,9 +50,9 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public Sale? Read(int id)
     {
-        foreach (Sale sale in DataSource.sales)
+        foreach (Sale? sale in DataSource.sales)
         {
-            if (sale.Id == id)
+            if (sale?.Id == id)
                 return sale;
         }
         return null;
@@ -64,7 +64,7 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public List<Sale> ReadAll()
     {
-        return DataSource.sales == null ? null : DataSource.sales;
+        return DataSource.sales == null ? null : new List<Sale>(DataSource.sales);
     }
 
     /// <summary>

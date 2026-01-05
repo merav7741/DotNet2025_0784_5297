@@ -53,9 +53,9 @@ internal class ProductImplementation : IProduct
     /// <returns></returns>
     public Product? Read(int id)
     {
-        foreach (Product product in DataSource.products)
+        foreach (Product? product in DataSource.products)
         {
-            if (product.Id == id)
+            if (product?.Id == id)
                 return product;
         }
         return null;
@@ -66,7 +66,7 @@ internal class ProductImplementation : IProduct
     /// <returns></returns>
     public List<Product> ReadAll()
     {
-        return DataSource.products == null ? null : DataSource.products;
+        return DataSource.products == null ? null :new List<Product>( DataSource.products);
     }
 
     /// <summary>
