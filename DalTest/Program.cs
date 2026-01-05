@@ -18,7 +18,6 @@ namespace DalTest
         {
             try
             {
-                Console.WriteLine("hello malka gadelowiz");
                 int choice;
                 Initialization.Initialize(s_dal);
                 while ((choice = PrintMainMenu()) != 0)
