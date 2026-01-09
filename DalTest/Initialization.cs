@@ -42,11 +42,11 @@ public static class Initialization
     /// </summary>
     private static void CreateSales()
     {
-        s_dal.Sale.Create(new Sale(1, 1, 1, 150, true, DateTime.Now, DateTime.Now.AddDays(7)));
-        s_dal.Sale.Create(new Sale(2, 2, 2, 50, true, DateTime.Now, DateTime.Now.AddDays(10)));
-        s_dal.Sale.Create(new Sale(3, 3, 4, 60, true, DateTime.Now, DateTime.Now.AddDays(14)));
-        s_dal.Sale.Create(new Sale(4, null, 3, 70, true, DateTime.Now, DateTime.Now.AddDays(10)));
-         s_dal.Sale.Create(new Sale(5, null, 2, 120, true, DateTime.Now, DateTime.Now.AddDays(10)));
+        s_dal.Sale.Create(new Sale(1, lst[0], 1, 150, true, DateTime.Now, DateTime.Now.AddDays(7)));
+        s_dal.Sale.Create(new Sale(2,lst[1], 2, 50, true, DateTime.Now, DateTime.Now.AddDays(10)));
+        s_dal.Sale.Create(new Sale(3, lst[2], 4, 60, true, DateTime.Now, DateTime.Now.AddDays(14)));
+        s_dal.Sale.Create(new Sale(4, lst[3], 3, 70, true, DateTime.Now, DateTime.Now.AddDays(10)));
+         s_dal.Sale.Create(new Sale(5, lst[4], 2, 120, true, DateTime.Now, DateTime.Now.AddDays(10)));
     }
 
   
