@@ -60,7 +60,7 @@ internal class ProductImplementation : IProduct
     /// <exception cref="DalNotExistException"></exception>
     public Product? Read(Func<Product, bool> filter)
     {
-        var productRead = DataSource.products.FirstOrDefault(filter);
+        var productRead = DataSource.products.FirstOrDefault(C => filter(C!));
         if (productRead == null)
             throw new DalNotExistException("Not Found product with this filter in products list");
         return productRead;
@@ -70,9 +70,13 @@ internal class ProductImplementation : IProduct
     /// פונקציה המחזירה את מערך המוצרים
     /// </summary>
     /// <returns></returns>
-    public List<Product> ReadAll()
+    public List<Product?> ReadAll(Func<Product, bool>? filter)
     {
-        return DataSource.products == null ? null :new List<Product>( DataSource.products);
+        if (filter == null)
+            return new List<Product?>(DataSource.products);
+        var product = DataSource.products.Where(p => filter(p!));
+        return product.ToList();
+
     }
 
     /// <summary>

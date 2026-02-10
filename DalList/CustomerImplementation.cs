@@ -64,7 +64,7 @@ namespace Dal
         /// <exception cref="DalNotExistException"></exception>
         public Customer? Read(Func<Customer, bool> filter)
         {
-            var customerRead = DataSource.customers.FirstOrDefault(filter);
+            var customerRead = DataSource.customers.FirstOrDefault(C=>filter(C!));
             if (customerRead == null)
                 throw new DalNotExistException("Not Found customer with this filter in customers list");
             return customerRead;
@@ -74,9 +74,12 @@ namespace Dal
         /// פונקציה שמחזירה את מערך הלקוחות
         /// </summary>
         /// <returns></returns>
-        public List<Customer> ReadAll()
+        public List<Customer> ReadAll(Func <Customer, bool>? filter = null)
         {
-            return DataSource.customers == null ? null : new List<Customer>(DataSource.customers);
+            if (filter == null)
+                return new List<Customer?>(DataSource.customers);
+            var customer = DataSource.customers.Where(c => filter(c!));
+            return customer.ToList();
         }
         /// <summary>
         /// פונקציה לעדכון פרטי לקוח 

@@ -69,9 +69,13 @@ internal class SaleImplementation : ISale
     /// פונקציה המחזירה את מערך המבצעים
     /// </summary>
     /// <returns></returns>
-    public List<Sale> ReadAll()
+    public List<Sale?> ReadAll(Func<Sale, bool>? filter)
     {
-        return DataSource.sales == null ? null : new List<Sale>(DataSource.sales);
+        if (filter == null)
+            return new List<Sale?>(DataSource.sales);
+        var sale = DataSource.sales.Where(p => filter(p!));
+        return sale.ToList();
+
     }
 
     /// <summary>
