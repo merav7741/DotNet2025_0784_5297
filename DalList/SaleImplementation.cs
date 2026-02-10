@@ -1,4 +1,5 @@
-﻿using DalApi;
+﻿using System.Linq;
+using DalApi;
 using DO;
 using static Dal.DataSource;
 
@@ -31,7 +32,7 @@ internal class SaleImplementation : ISale
 
         if (saleToDelete == null)
         {
-            throw new DalIdNotExistException("This sale not exists in the sales list");
+            throw new DalNotExistException("This sale not exists in the sales list");
         }
 
         DataSource.sales.Remove(saleToDelete);
@@ -44,12 +45,24 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public Sale? Read(int id)
     {
-        foreach (Sale? sale in DataSource.sales)
-        {
-            if (sale?.Id == id)
-                return sale;
-        }
-        return null;
+        var saleRead= DataSource.sales.FirstOrDefault(sale => sale.Id == id);
+        if (saleRead == null)
+            throw new DalNotExistException("this sale not exists in the sales list");
+        return saleRead;
+    }
+
+    /// <summary>
+    /// פוקציה קריאה לפי תנאי מסוים
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    /// <exception cref="DalNotExistException"></exception>
+    public Sale? Read(Func<Sale, bool> filter)
+    {
+        var saleRead = DataSource.sales.FirstOrDefault(filter);
+        if (saleRead == null)
+            throw new DalNotExistException("Not Found sale with this filter in sales list");
+        return saleRead;
     }
 
     /// <summary>

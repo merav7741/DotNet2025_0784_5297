@@ -35,7 +35,7 @@ internal class ProductImplementation : IProduct
 
         if (productToDelete == null)
         {
-            throw new DalIdNotExistException("The product not exists in products list");
+            throw new DalNotExistException("The product not exists in products list");
         }
 
         DataSource.products.Remove(productToDelete);
@@ -47,11 +47,25 @@ internal class ProductImplementation : IProduct
     /// <returns></returns>
     public Product Read(int id)
     {
-        var product = DataSource.products.FirstOrDefault(product => product.Id == id);
-        if (product == null)
-            throw new DalIdNotExistException("The product not exists in products list");
-        return product;
+        var productRead = DataSource.products.FirstOrDefault(product => product.Id == id);
+        if (productRead == null)
+            throw new DalNotExistException("The product not exists in products list");
+        return productRead;
     }
+    /// <summary>
+    /// פוקציה קריאה לפי תנאי מסוים
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    /// <exception cref="DalNotExistException"></exception>
+    public Product? Read(Func<Product, bool> filter)
+    {
+        var productRead = DataSource.products.FirstOrDefault(filter);
+        if (productRead == null)
+            throw new DalNotExistException("Not Found product with this filter in products list");
+        return productRead;
+    }
+
     /// <summary>
     /// פונקציה המחזירה את מערך המוצרים
     /// </summary>

@@ -176,7 +176,6 @@ namespace DalTest
                 Console.WriteLine(e.Message);
             }
 
-
         }
         /// <summary>
         /// פונקציה לקריאת כל הפריטים מסוג T    
@@ -209,12 +208,14 @@ namespace DalTest
             }
         }
 
-
+        /// <summary>
+        /// פונקציה להוספת מכירה
+        /// </summary>
         private static void AddSale()
         {
             Sale sale = AskSale();
             int newId = s_dal.Sale.Create(sale);
-            Console.WriteLine("Sale added with Id: {newId}");
+            Console.WriteLine($"Sale added with Id: {newId}");
         }
         /// <summary>
         /// פונקציה להוספת לקוח
@@ -226,10 +227,6 @@ namespace DalTest
             Console.WriteLine($"Customer added with Id: {newId}");
         }
         /// <summary>
-        /// פונקציה לעדכון מוצר
-        /// </summary>
-
-        /// <summary>
         /// פונקציה להוספת מוצר
         /// </summary>
         private static void AddProduct()
@@ -239,9 +236,8 @@ namespace DalTest
             Console.WriteLine($"Product added with Id: {newId}");
         }
         /// <summary>
-        /// פונקציה להוספת מכירה
+        /// פונקציה לעדכון מוצר
         /// </summary>
-
         private static void UpdateProduct()
         {
             Console.WriteLine("insert id for update product");

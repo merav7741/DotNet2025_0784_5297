@@ -14,5 +14,6 @@ namespace DalApi
         List<T> ReadAll();
         void Update(T item);
         void Delete(int id);
+        T? Read(Func<T,bool> filter);
     }
 }

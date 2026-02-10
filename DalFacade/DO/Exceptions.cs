@@ -4,16 +4,17 @@
 /// <summary>
 /// מחלקת שגיאה עבור ת.ז שגויה
 /// </summary>
-public class DalIdNotExistException : Exception
+public class DalNotExistException : Exception
 {
-    public DalIdNotExistException(string meesage) : base(meesage) { }
-    //public DalIdNotExistException(string meesage,Exception innerException) : base(meesage,innerException) { }
+    public DalNotExistException(string meesage) : base(meesage) { }
 }
 
 /// <summary>
 /// מחלקת שגיאה עבור ת.ז קיימת
 /// </summary>
-public class DalIdExsistException : Exception
+public class DalExsistException : Exception
 {
-    public DalIdExsistException(string meesage) : base(meesage) { }
+    public DalExsistException(string meesage) : base(meesage) { }
 }
+
+

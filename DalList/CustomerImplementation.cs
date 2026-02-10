@@ -1,7 +1,6 @@
 ﻿using DO;
 using DalApi;
 
-
 namespace Dal
 {
     public class CustomerImplementation : ICustomer
@@ -17,7 +16,7 @@ namespace Dal
             {
                 if (customer != null && customer!.Id == item.Id)
                 {
-                    throw new DalIdExsistException("This customer with this id already exists");
+                    throw new DalExsistException("This customer with this id already exists");
                 }
             }
             DataSource.customers.Add(item);
@@ -40,7 +39,7 @@ namespace Dal
             }
 
             if (!found)
-                throw new DalIdNotExistException("This customer not exists in the customers list");
+                throw new DalNotExistException("This customer not exists in the customers list");
         }
         /// <summary>
         /// פונקציה שמחזירה לקוח על פי id
@@ -56,6 +55,21 @@ namespace Dal
             }
             return null;
         }
+
+        /// <summary>
+        /// פוקציה קריאה לפי תנאי מסוים
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        /// <exception cref="DalNotExistException"></exception>
+        public Customer? Read(Func<Customer, bool> filter)
+        {
+            var customerRead = DataSource.customers.FirstOrDefault(filter);
+            if (customerRead == null)
+                throw new DalNotExistException("Not Found customer with this filter in customers list");
+            return customerRead;
+        }
+
         /// <summary>
         /// פונקציה שמחזירה את מערך הלקוחות
         /// </summary>
