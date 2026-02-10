@@ -1,4 +1,5 @@
-﻿using Dal;
+﻿using System.Collections.Generic;
+using Dal;
 using DalApi;
 using DO;
 using static Dal.DataSource;
@@ -18,13 +19,6 @@ internal class ProductImplementation : IProduct
     public int Create(Product item)
     {
         int newId = DataSource.Config.NextProduct;
-        foreach (Product? product in DataSource.products)
-        {
-            if (product != null && product!.Id == item.Id)
-            {
-                throw new Exception("The product exists in the list");
-            }
-        }
         Product newProduct = item with { Id = newId };
         DataSource.products.Add(newProduct);
         return newId;
@@ -41,7 +35,7 @@ internal class ProductImplementation : IProduct
 
         if (productToDelete == null)
         {
-            throw new InvalidOperationException($"!!!מוצר זה לא נמצא");
+            throw new DalIdNotExistException("The product not exists in products list");
         }
 
         DataSource.products.Remove(productToDelete);
@@ -51,14 +45,12 @@ internal class ProductImplementation : IProduct
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public Product? Read(int id)
+    public Product Read(int id)
     {
-        foreach (Product? product in DataSource.products)
-        {
-            if (product?.Id == id)
-                return product;
-        }
-        return null;
+        var product = DataSource.products.FirstOrDefault(product => product.Id == id);
+        if (product == null)
+            throw new DalIdNotExistException("The product not exists in products list");
+        return product;
     }
     /// <summary>
     /// פונקציה המחזירה את מערך המוצרים

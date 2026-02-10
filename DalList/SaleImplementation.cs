@@ -15,12 +15,6 @@ internal class SaleImplementation : ISale
     public int Create(Sale item)
     {
         int newId = DataSource.Config.NextSaleId;
-        foreach (Sale? sale in DataSource.sales)
-        {
-            if (sale != null && sale.Id == newId)
-                throw new Exception("Sale with this id already exists");
-        }
-
         Sale newSale = item with { Id = newId };
         DataSource.sales.Add(newSale);
         return newId;
@@ -37,7 +31,7 @@ internal class SaleImplementation : ISale
 
         if (saleToDelete == null)
         {
-            throw new InvalidOperationException($"!!!מבצע זה לא נמצא");
+            throw new DalIdNotExistException("This sale not exists in the sales list");
         }
 
         DataSource.sales.Remove(saleToDelete);

@@ -4,7 +4,7 @@ using DalApi;
 
 namespace Dal
 {
-    internal class CustomerImplementation : ICustomer
+    public class CustomerImplementation : ICustomer
     {
         /// <summary>
         /// פונקציה להוספת לקוח 
@@ -17,7 +17,7 @@ namespace Dal
             {
                 if (customer != null && customer!.Id == item.Id)
                 {
-                    throw new Exception("This customer exists in the customers list");
+                    throw new DalIdExsistException("This customer with this id already exists");
                 }
             }
             DataSource.customers.Add(item);
@@ -40,8 +40,7 @@ namespace Dal
             }
 
             if (!found)
-
-                throw new InvalidOperationException("הלקוח לא נמצא למחיקה");
+                throw new DalIdNotExistException("This customer not exists in the customers list");
         }
         /// <summary>
         /// פונקציה שמחזירה לקוח על פי id
@@ -63,7 +62,7 @@ namespace Dal
         /// <returns></returns>
         public List<Customer> ReadAll()
         {
-            return DataSource.customers == null ? null :new List<Customer>( DataSource.customers);
+            return DataSource.customers == null ? null : new List<Customer>(DataSource.customers);
         }
         /// <summary>
         /// פונקציה לעדכון פרטי לקוח 

@@ -363,7 +363,7 @@ namespace DalTest
             string address;
             string phone;
             Console.WriteLine("Enter id of the customer");
-            if (int.TryParse(Console.ReadLine(), out id)) id = 0;
+             int.TryParse(Console.ReadLine(), out id);
             Console.WriteLine("Enter name of the customer");
             name = Console.ReadLine();
             Console.WriteLine("Enter address of the customer");
