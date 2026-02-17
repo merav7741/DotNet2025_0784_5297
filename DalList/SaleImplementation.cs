@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Reflection;
 using DalApi;
 using DO;
+using Tools;
 using static Dal.DataSource;
 
 namespace Dal;
@@ -32,6 +34,7 @@ internal class SaleImplementation : ISale
 
         if (saleToDelete == null)
         {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant delete the sale because  id not exists");
             throw new DalNotExistException("This sale not exists in the sales list");
         }
 
@@ -45,9 +48,12 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public Sale? Read(int id)
     {
-        var saleRead= DataSource.sales.FirstOrDefault(sale => sale.Id == id);
+        var saleRead = DataSource.sales.FirstOrDefault(sale => sale.Id == id);
         if (saleRead == null)
+        {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read  sale because  not found customer with this filter");
             throw new DalNotExistException("this sale not exists in the sales list");
+        }
         return saleRead;
     }
 

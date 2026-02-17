@@ -3,7 +3,11 @@ using DO;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
+using System.Reflection;
+using Tools;
+
 namespace DalTest
+
 {
     /// <summary>`
     /// מחלקת התוכנית הראשית
@@ -38,6 +42,7 @@ namespace DalTest
             }
             catch (Exception ex)
             {
+                LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Error: Unable to create store lists . ");
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }

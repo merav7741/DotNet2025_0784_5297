@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using Dal;
 using DalApi;
 using DO;
+using Tools;
 using static Dal.DataSource;
 
 namespace Dal;
@@ -35,6 +37,7 @@ internal class ProductImplementation : IProduct
 
         if (productToDelete == null)
         {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant delete the product because  id not exists");
             throw new DalNotExistException("The product not exists in products list");
         }
 
@@ -49,7 +52,10 @@ internal class ProductImplementation : IProduct
     {
         var productRead = DataSource.products.FirstOrDefault(product => product.Id == id);
         if (productRead == null)
+        {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read  product because  not found customer with this filter");
             throw new DalNotExistException("The product not exists in products list");
+        }
         return productRead;
     }
     /// <summary>

@@ -1,6 +1,7 @@
 ﻿using DO;
 using DalApi;
-
+using System.Reflection;
+using Tools;
 namespace Dal
 {
     public class CustomerImplementation : ICustomer
@@ -16,6 +17,7 @@ namespace Dal
             {
                 if (customer != null && customer!.Id == item.Id)
                 {
+                    LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant create new customer because  id already exists");
                     throw new DalExsistException("This customer with this id already exists");
                 }
             }
@@ -39,7 +41,10 @@ namespace Dal
             }
 
             if (!found)
+            {
+                LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant delete the customer because  id not exists");
                 throw new DalNotExistException("This customer not exists in the customers list");
+            }
         }
         /// <summary>
         /// פונקציה שמחזירה לקוח על פי id
@@ -64,9 +69,12 @@ namespace Dal
         /// <exception cref="DalNotExistException"></exception>
         public Customer? Read(Func<Customer, bool> filter)
         {
-            var customerRead = DataSource.customers.FirstOrDefault(C=>filter(C!));
+            var customerRead = DataSource.customers.FirstOrDefault(C => filter(C!));
             if (customerRead == null)
+            {
+                LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read  customer because  not found customer with this filter");
                 throw new DalNotExistException("Not Found customer with this filter in customers list");
+            }
             return customerRead;
         }
 
@@ -74,7 +82,7 @@ namespace Dal
         /// פונקציה שמחזירה את מערך הלקוחות
         /// </summary>
         /// <returns></returns>
-        public List<Customer> ReadAll(Func <Customer, bool>? filter = null)
+        public List<Customer> ReadAll(Func<Customer, bool>? filter = null)
         {
             if (filter == null)
                 return new List<Customer?>(DataSource.customers);

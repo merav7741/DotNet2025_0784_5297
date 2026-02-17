@@ -40,23 +40,38 @@ namespace Tools
             if (!Directory.Exists(GetFolder()))
                 return;
             string[] nameFolders = Directory.GetDirectories(Log);
-           
+
             foreach (string nameFolder in nameFolders)
             {
-                string[] dateFolter=nameFolder.Split('/');
-                if (dateFolter.Length > 2)
+                string[] dateFolter = nameFolder.Split('/');
+                if (dateFolter.Length < 2)
                     continue;
+                //לבדוק את המיקומים של האינקסים
                 int year = (int.Parse(dateFolter[1]));
                 int month = (int.Parse(dateFolter[2]));
                 if (year == DateTime.Now.Year)
                 {
-                    if (month+2 < DateTime.Now.Month)
-                    {                    
+                    if (month + 2 < DateTime.Now.Month)
+                    {
                         Directory.Delete(nameFolder, true);
                     }
                 }
                 else
-                    Directory.Delete(nameFolder, true);
+                {
+                    if (DateTime.Now.Month == 1)
+                    {
+                        if (month < 11)
+                        { Directory.Delete(nameFolder, true); }
+                    }
+                    if (DateTime.Now.Month == 2)
+                    {
+                        if (month < 10)
+                        { Directory.Delete(nameFolder, true); }
+                    }
+                    else
+                        Directory.Delete(nameFolder, true);
+                }
+
 
             }
 
