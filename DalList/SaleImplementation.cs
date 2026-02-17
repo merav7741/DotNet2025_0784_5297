@@ -17,9 +17,11 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public int Create(Sale item)
     {
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start create new sale");
         int newId = DataSource.Config.NextSaleId;
         Sale newSale = item with { Id = newId };
         DataSource.sales.Add(newSale);
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end create new sale succesfull");
         return newId;
     }
 
@@ -30,6 +32,8 @@ internal class SaleImplementation : ISale
     /// <param name="id"></param>
     public void Delete(int id)
     {
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start delete sale");
+
         var saleToDelete = DataSource.sales.FirstOrDefault(sale => sale.Id == id);
 
         if (saleToDelete == null)
@@ -39,6 +43,8 @@ internal class SaleImplementation : ISale
         }
 
         DataSource.sales.Remove(saleToDelete);
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end delete sale succesfull");
+
     }
 
     /// <summary>
@@ -48,12 +54,14 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public Sale? Read(int id)
     {
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read with id sale");
         var saleRead = DataSource.sales.FirstOrDefault(sale => sale.Id == id);
         if (saleRead == null)
         {
             LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read  sale because  not found customer with this filter");
             throw new DalNotExistException("this sale not exists in the sales list");
         }
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read with id sale succesfull");
         return saleRead;
     }
 
@@ -65,9 +73,14 @@ internal class SaleImplementation : ISale
     /// <exception cref="DalNotExistException"></exception>
     public Sale? Read(Func<Sale, bool> filter)
     {
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read with filter sale");
         var saleRead = DataSource.sales.FirstOrDefault(filter);
         if (saleRead == null)
+        {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read with filter sale because not found sale with this filter");
             throw new DalNotExistException("Not Found sale with this filter in sales list");
+        }
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read with filter sale succesfull");
         return saleRead;
     }
 
@@ -77,9 +90,14 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public List<Sale?> ReadAll(Func<Sale, bool>? filter)
     {
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read all sale");
         if (filter == null)
+        {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read all sale return full sales list becausu the filter is null");
             return new List<Sale?>(DataSource.sales);
+        }
         var sale = DataSource.sales.Where(p => filter(p!));
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read all sale succesfull");
         return sale.ToList();
 
     }
