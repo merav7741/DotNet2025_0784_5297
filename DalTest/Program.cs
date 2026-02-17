@@ -285,7 +285,7 @@ namespace DalTest
             if (!bool.TryParse(Console.ReadLine(), out IsSaleToAllCustomer)) IsSaleToAllCustomer = true;
             Console.WriteLine("Enter StartSale date (yyyy-MM-dd) or leave empty");
             string startInput = Console.ReadLine();
-            if (!DateTime.TryParse(startInput, out StartSale)) StartSale = DateTime.MinValuen;
+            if (!DateTime.TryParse(startInput, out StartSale)) StartSale = DateTime.MinValue;
             Console.WriteLine("Enter EndSale date (yyyy-MM-dd) or leave empty");
             string endInput = Console.ReadLine();
             if (!DateTime.TryParse(endInput, out EndSale)) EndSale = DateTime.Now;
