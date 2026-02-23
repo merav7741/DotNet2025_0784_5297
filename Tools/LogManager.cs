@@ -30,7 +30,7 @@ namespace Tools
             {
                 File.Create(file).Close();
             }
-            using (StreamWriter sw = new StreamWriter(file))
+            using (StreamWriter sw = new StreamWriter(file,true))
             {
                 sw.WriteLine($"{DateTime.Now}\t{nameProject}.{funcName}:\t{message}");
             }
@@ -47,8 +47,8 @@ namespace Tools
                 if (dateFolter.Length < 2)
                     continue;
                 //לבדוק את המיקומים של האינקסים
-                int year = (int.Parse(dateFolter[1]));
-                int month = (int.Parse(dateFolter[2]));
+                int year = (int.Parse(dateFolter[0]));
+                int month = (int.Parse(dateFolter[1]));
                 if (year == DateTime.Now.Year)
                 {
                     if (month + 2 < DateTime.Now.Month)
