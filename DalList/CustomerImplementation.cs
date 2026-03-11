@@ -35,13 +35,11 @@ namespace Dal
         {
             LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start delete customer");
             var customerToDelete = DataSource.customers.FirstOrDefault(customer => customer.Id == id);
-
             if (customerToDelete == null)
             {
                 LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant delete the customer because  id not exists");
                 throw new DalNotExistException("The product not exists in customers list");
             }
-
             DataSource.customers.Remove(customerToDelete);
             LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end delete customer succesfull");
         }
@@ -63,7 +61,6 @@ namespace Dal
             return customerRead;
 
         }
-
         /// <summary>
         /// פוקציה קריאה לפי תנאי מסוים
         /// </summary>
@@ -82,7 +79,6 @@ namespace Dal
             LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read with filter Customer succesfull");
             return customerRead;
         }
-
         /// <summary>
         /// פונקציה שמחזירה את מערך הלקוחות
         /// </summary>

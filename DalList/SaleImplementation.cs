@@ -24,7 +24,6 @@ internal class SaleImplementation : ISale
         LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end create new sale succesfull");
         return newId;
     }
-
     /// <summary>
     /// פונקצית מחיקה-
     ///לפי ID מוחקת מבצע ממערך המבצעים
@@ -33,20 +32,16 @@ internal class SaleImplementation : ISale
     public void Delete(int id)
     {
         LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start delete sale");
-
         var saleToDelete = DataSource.sales.FirstOrDefault(sale => sale.Id == id);
-
         if (saleToDelete == null)
         {
             LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant delete the sale because  id not exists");
             throw new DalNotExistException("This sale not exists in the sales list");
         }
-
         DataSource.sales.Remove(saleToDelete);
         LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end delete sale succesfull");
 
     }
-
     /// <summary>
     /// פונקציה המקבלת ID ומחזירה את המבצע המבוקש
     /// </summary>
@@ -64,7 +59,6 @@ internal class SaleImplementation : ISale
         LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read with id sale succesfull");
         return saleRead;
     }
-
     /// <summary>
     /// פוקציה קריאה לפי תנאי מסוים
     /// </summary>
@@ -101,7 +95,6 @@ internal class SaleImplementation : ISale
         return sale.ToList();
 
     }
-
     /// <summary>
     /// פונקציה עדכון-
     /// פונקציה המעדכנת מבצע מסוים

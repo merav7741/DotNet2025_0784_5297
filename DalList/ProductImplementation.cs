@@ -27,7 +27,6 @@ internal class ProductImplementation : IProduct
         LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end create new product succesfull");
         return newId;
     }
-
     /// <summary>
     /// פונקצית מחיקה-
     ///לפי ID מוחקת מוצר ממערך המוצרים
@@ -37,16 +36,13 @@ internal class ProductImplementation : IProduct
     {
         LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start delete  product");
         var productToDelete = DataSource.products.FirstOrDefault(product => product.Id == id);
-
         if (productToDelete == null)
         {
             LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant delete the product because  id not exists");
             throw new DalNotExistException("The product not exists in products list");
         }
-
         DataSource.products.Remove(productToDelete);
         LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end delete product succesfull");
-
     }
     /// <summary>
     /// פונקציה המקבלת ID ומחזירה את המוצר המבוקש
@@ -64,7 +60,6 @@ internal class ProductImplementation : IProduct
         }
         LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read with id product succesfull");
         return productRead;
-
     }
     /// <summary>
     /// פוקציה קריאה לפי תנאי מסוים
@@ -84,7 +79,6 @@ internal class ProductImplementation : IProduct
         LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read with filter product succesfull");
         return productRead;
     }
-
     /// <summary>
     /// פונקציה המחזירה את מערך המוצרים
     /// </summary>
@@ -100,9 +94,7 @@ internal class ProductImplementation : IProduct
         var product = DataSource.products.Where(p => filter(p!));
         LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read all product succesfull");
         return product.ToList();
-
     }
-
     /// <summary>
     /// פונקציה המעדכנת מוצר מסוים
     /// </summary>

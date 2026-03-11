@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tools
 {
+    /// <summary>
+    /// מחלקה לניהול הלוגים, כל פונקציה שמבקשת לכתוב ללוג תשתמש בפונקציה WriteToLog שמקבלת את שם הפונקציה, שם הפרויקט וההודעה לכתיבה
+    /// </summary>
     public static class LogManager
     {
         private static string Log = "Log";
@@ -18,6 +21,12 @@ namespace Tools
         {
             return GetFolder() + "/" + DateTime.Now.Day.ToString() + ".txt";
         }
+        /// <summary>
+        /// פונקציה לכתיבת הודעה לקובץ הלוג, מקבלת את שם הפונקציה, שם הפרויקט וההודעה לכתיבה
+        /// </summary>
+        /// <param name="funcName"></param>
+        /// <param name="nameProject"></param>
+        /// <param name="message"></param>
         public static void WriteToLog(string funcName, string nameProject, string message)
         {
             string folder = GetFolder();
@@ -30,13 +39,16 @@ namespace Tools
             {
                 File.Create(file).Close();
             }
-            using (StreamWriter sw = new StreamWriter(file))
+            using (StreamWriter sw = new StreamWriter(file,true))
             {
                 sw.WriteLine($"{DateTime.Now}\t{nameProject}.{funcName}:\t{message}");
             }
         }
+        /// <summary>
+        /// פונקציה למחיקת תיקיות ישנות, התיקיות נשמרות לפי שנה וחודש, אם התיקייה בת יותר מחודשיים היא נמחקת
+        /// </summary>
         public static void DeleteOldFolder()
-        {
+        {//לבדוק האם הפונקציה הזו טובה...
             if (!Directory.Exists(GetFolder()))
                 return;
             string[] nameFolders = Directory.GetDirectories(Log);
@@ -46,7 +58,6 @@ namespace Tools
                 string[] dateFolter = nameFolder.Split('/');
                 if (dateFolter.Length < 2)
                     continue;
-                //לבדוק את המיקומים של האינקסים
                 int year = (int.Parse(dateFolter[1]));
                 int month = (int.Parse(dateFolter[2]));
                 if (year == DateTime.Now.Year)
@@ -72,9 +83,7 @@ namespace Tools
                         Directory.Delete(nameFolder, true);
                 }
 
-
             }
-
         }
     }
 }
