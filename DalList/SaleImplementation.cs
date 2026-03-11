@@ -1,5 +1,8 @@
-﻿using DalApi;
+﻿using System.Linq;
+using System.Reflection;
+using DalApi;
 using DO;
+using Tools;
 using static Dal.DataSource;
 
 namespace Dal;
@@ -14,16 +17,12 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public int Create(Sale item)
     {
-        for (int i = 0; i < DataSource.sales.Count; i++)
-        {
-            if (DataSource.sales[i] != null && DataSource.sales[i].Id == item.Id)
-            {
-                throw new InvalidOperationException("לקוח זה כבר קיים ברשימת מכירות");
-            }
-        }
-
-        DataSource.sales.Add(item);
-        return item.Id;
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start create new sale");
+        int newId = DataSource.Config.NextSaleId;
+        Sale newSale = item with { Id = newId };
+        DataSource.sales.Add(newSale);
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end create new sale succesfull");
+        return newId;
     }
 
     /// <summary>
@@ -33,14 +32,19 @@ internal class SaleImplementation : ISale
     /// <param name="id"></param>
     public void Delete(int id)
     {
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start delete sale");
+
         var saleToDelete = DataSource.sales.FirstOrDefault(sale => sale.Id == id);
 
         if (saleToDelete == null)
         {
-            throw new InvalidOperationException($"!!!מבצע זה לא נמצא");
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant delete the sale because  id not exists");
+            throw new DalNotExistException("This sale not exists in the sales list");
         }
 
         DataSource.sales.Remove(saleToDelete);
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end delete sale succesfull");
+
     }
 
     /// <summary>
@@ -50,21 +54,52 @@ internal class SaleImplementation : ISale
     /// <returns></returns>
     public Sale? Read(int id)
     {
-        foreach (Sale sale in DataSource.sales)
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read with id sale");
+        var saleRead = DataSource.sales.FirstOrDefault(sale => sale.Id == id);
+        if (saleRead == null)
         {
-            if (sale.Id == id)
-                return sale;
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read  sale because  not found customer with this filter");
+            throw new DalNotExistException("this sale not exists in the sales list");
         }
-        return null;
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read with id sale succesfull");
+        return saleRead;
+    }
+
+    /// <summary>
+    /// פוקציה קריאה לפי תנאי מסוים
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    /// <exception cref="DalNotExistException"></exception>
+    public Sale? Read(Func<Sale, bool> filter)
+    {
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read with filter sale");
+        var saleRead = DataSource.sales.FirstOrDefault(filter);
+        if (saleRead == null)
+        {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read with filter sale because not found sale with this filter");
+            throw new DalNotExistException("Not Found sale with this filter in sales list");
+        }
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read with filter sale succesfull");
+        return saleRead;
     }
 
     /// <summary>
     /// פונקציה המחזירה את מערך המבצעים
     /// </summary>
     /// <returns></returns>
-    public List<Sale> ReadAll()
+    public List<Sale?> ReadAll(Func<Sale, bool>? filter)
     {
-        return DataSource.sales == null ? null : DataSource.sales;
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read all sale");
+        if (filter == null)
+        {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read all sale return full sales list becausu the filter is null");
+            return new List<Sale?>(DataSource.sales);
+        }
+        var sale = DataSource.sales.Where(p => filter(p!));
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read all sale succesfull");
+        return sale.ToList();
+
     }
 
     /// <summary>
@@ -74,20 +109,10 @@ internal class SaleImplementation : ISale
     /// <param name="item"></param>
     public void Update(Sale item)
     {
-        bool f = false;
-        foreach (Sale sale in DataSource.sales)
+        if (DataSource.sales.Any(c => c?.Id == item.Id))
         {
-            if (sale.Id == item.Id)
-            {
-                f = true;
-                DataSource.sales.Remove(sale);
-            }
+            Delete(item.Id);
         }
-        if (f)
-        {
-            DataSource.sales.Add(item);
-            return;
-        }
-        throw new Exception("לא נמצע מבצע זהה לעדכון");
+        DataSource.sales.Add(item);
     }
 }

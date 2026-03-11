@@ -1,10 +1,10 @@
 ﻿using DO;
 using DalApi;
-
-
+using System.Reflection;
+using Tools;
 namespace Dal
 {
-    internal class CustomerImplementation : ICustomer
+    public class CustomerImplementation : ICustomer
     {
         /// <summary>
         /// פונקציה להוספת לקוח 
@@ -13,16 +13,19 @@ namespace Dal
         /// <returns></returns>
         public int Create(Customer item)
         {
-            for (int i = 0; i < DataSource.customers.Count; i++)
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start create new customer");
+            foreach (Customer? customer in DataSource.customers)
             {
-                if (DataSource.customers[i] != null && DataSource.customers[i].Id == item.Id)
+                if (customer != null && customer!.Id == item.Id)
                 {
-                    throw new InvalidOperationException("לקוח זה כבר קיים ברשימת הלקוחות");
+                    LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant create new customer because  id already exists");
+                    throw new DalExsistException("This customer with this id already exists");
                 }
             }
-
             DataSource.customers.Add(item);
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end create new customer successfull");
             return item.Id;
+
         }
         /// <summary>
         /// /פונקציה למחיקת לקוח
@@ -30,27 +33,17 @@ namespace Dal
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            //var customerToDelete = DataSource.customers.FirstOrDefault(Customer => Customer.Id == id);
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start delete customer");
+            var customerToDelete = DataSource.customers.FirstOrDefault(customer => customer.Id == id);
 
-            //if (customerToDelete == null)
-            //{
-            //    throw new InvalidOperationException($"!!!מוצר זה לא נמצא");
-            //}
-            //DataSource.customers.Remove(customerToDelete);
-
-            bool found = false;
-            for (int i = 0; i < DataSource.customers.Count; i++)
+            if (customerToDelete == null)
             {
-                if (DataSource.customers[i] != null && DataSource.customers[i].Id == id)
-                {
-                    DataSource.customers.Remove(DataSource.customers[i]);
-                    found = true;
-                }
+                LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant delete the customer because  id not exists");
+                throw new DalNotExistException("The product not exists in customers list");
             }
 
-            if (!found)
-
-                throw new InvalidOperationException("הלקוח לא נמצא למחיקה");
+            DataSource.customers.Remove(customerToDelete);
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end delete customer succesfull");
         }
         /// <summary>
         /// פונקציה שמחזירה לקוח על פי id
@@ -59,20 +52,52 @@ namespace Dal
         /// <returns></returns>
         public Customer? Read(int id)
         {
-            foreach (Customer customer in DataSource.customers)
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read with id custome");
+            var customerRead = DataSource.customers.FirstOrDefault(Customer => Customer.Id == id);
+            if (customerRead == null)
             {
-                if (customer.Id == id)
-                    return customer;
+                LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read  Customer because  not found customer with this filter");
+                throw new DalNotExistException("The Customer not exists in customers list");
             }
-            return null;
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read with id Customer succesfull");
+            return customerRead;
+
         }
+
+        /// <summary>
+        /// פוקציה קריאה לפי תנאי מסוים
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        /// <exception cref="DalNotExistException"></exception>
+        public Customer? Read(Func<Customer, bool> filter)
+        {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read with filter custome");
+            var customerRead = DataSource.customers.FirstOrDefault(C => filter(C!));
+            if (customerRead == null)
+            {
+                LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read  customer because  not found customer with this filter");
+                throw new DalNotExistException("Not Found customer with this filter in customers list");
+            }
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read with filter Customer succesfull");
+            return customerRead;
+        }
+
         /// <summary>
         /// פונקציה שמחזירה את מערך הלקוחות
         /// </summary>
         /// <returns></returns>
-        public List<Customer> ReadAll()
+        public List<Customer> ReadAll(Func<Customer, bool>? filter = null)
         {
-            return DataSource.customers == null ? null : DataSource.customers;
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read all customer");
+            if (filter == null)
+            {
+                LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read all customer return full customers list becausu the filter is null");
+                return new List<Customer?>(DataSource.customers);
+            }
+            var customer = DataSource.customers.Where(c => filter(c!));
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read all customer succesfull");
+            return customer.ToList();
         }
         /// <summary>
         /// פונקציה לעדכון פרטי לקוח 
@@ -80,22 +105,11 @@ namespace Dal
         /// <param name="item"></param>
         public void Update(Customer item)
         {
-            bool f = false;
-            foreach (Customer customer in DataSource.customers)
+            if (DataSource.customers.Any(c => c?.Id == item.Id))
             {
-                if (customer.Id == item.Id)
-                {
-                    f = true;
-                    DataSource.customers.Remove(customer);
-                }
+                Delete(item.Id);
             }
-            if (f)
-            {
-                DataSource.customers.Add(item);
-                return;
-            }
-            throw new Exception("לא נמצע מוצר זהה לעדכון");
-
+            DataSource.customers.Add(item);
         }
     }
 }

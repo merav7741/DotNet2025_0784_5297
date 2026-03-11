@@ -3,9 +3,13 @@ using DO;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
+using System.Reflection;
+using Tools;
+
 namespace DalTest
+
 {
-    /// <summary>
+    /// <summary>`
     /// מחלקת התוכנית הראשית
     /// </summary>
     internal class Program
@@ -16,9 +20,9 @@ namespace DalTest
         static readonly IDal s_dal = new Dal.DalList();
         private static void Main(string[] args)
         {
-            int choice;
             try
             {
+                int choice;
                 Initialization.Initialize(s_dal);
                 while ((choice = PrintMainMenu()) != 0)
                 {
@@ -38,6 +42,7 @@ namespace DalTest
             }
             catch (Exception ex)
             {
+                LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Error: Unable to create store lists . ");
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
@@ -72,7 +77,7 @@ namespace DalTest
             int choice;
             do
             {
-                choice = PrintMainMenu();
+                choice = PrintSubMenu("product");
                 switch (choice)
                 {
                     case 1:
@@ -105,7 +110,7 @@ namespace DalTest
             int choice;
             do
             {
-                choice = PrintMainMenu();
+                choice = PrintSubMenu("customer");
                 switch (choice)
                 {
                     case 1:
@@ -136,7 +141,7 @@ namespace DalTest
             int choice;
             do
             {
-                choice = PrintMainMenu();
+                choice = PrintSubMenu("sale");
                 switch (choice)
                 {
                     case 1:
@@ -166,7 +171,15 @@ namespace DalTest
         /// <param name="crud"></param>
         private static void Read<T>(ICrud<T> crud)
         {
-
+            Console.WriteLine("insert id");
+            try
+            {
+                Console.WriteLine(crud.Read(int.Parse(Console.ReadLine() ?? "")));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
         }
         /// <summary>
@@ -185,57 +198,104 @@ namespace DalTest
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="crud"></param>
-        private static void Delete<T>(ICrud<T> crud) { }
-
-        /// <summary>
-        /// פונקציה להוספת מוצר
-        /// </summary>
-        private static void AddProduct()
+        private static void Delete<T>(ICrud<T> crud)
         {
-            Product product = AskProduct();
-            s_dal.Product.Create(product);
-            int newId = product.Id;
-            Console.WriteLine($"Product added with Id: {newId}");
+            Console.WriteLine("insert id to remove");
+            string? input = Console.ReadLine();
+            if (int.TryParse(input, out int id))
+            {
+                crud.Delete(id);
+                Console.WriteLine("this is remove");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid integer ID.");
+            }
         }
+
         /// <summary>
         /// פונקציה להוספת מכירה
         /// </summary>
         private static void AddSale()
         {
             Sale sale = AskSale();
-            s_dal.Sale.Create(sale);
-            int newId = sale.Id;
-            Console.WriteLine("Sale added with Id: {newId}");
+            int newId = s_dal.Sale.Create(sale);
+            Console.WriteLine($"Sale added with Id: {newId}");
         }
         /// <summary>
         /// פונקציה להוספת לקוח
         /// </summary>
         private static void AddCustomer()
         {
-            Customer customer = Askcustomer();
-            s_dal.Customer.Create(customer);
-            int newId = customer.Id;
+            Customer customer = AskCustomer();
+            int newId = s_dal.Customer.Create(customer);
             Console.WriteLine($"Customer added with Id: {newId}");
+        }
+        /// <summary>
+        /// פונקציה להוספת מוצר
+        /// </summary>
+        private static void AddProduct()
+        {
+            Product product = AskProduct();
+            int newId = s_dal.Product.Create(product);
+            Console.WriteLine($"Product added with Id: {newId}");
         }
         /// <summary>
         /// פונקציה לעדכון מוצר
         /// </summary>
         private static void UpdateProduct()
         {
+            Console.WriteLine("insert id for update product");
+            string? input = Console.ReadLine();
 
+            if (int.TryParse(input, out int id))
+            {
+                Product product = AskProduct(id);
+                s_dal.Product.Update(product);
+                Console.WriteLine("product updated");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid integer ID.");
+            }
         }
         /// <summary>
         /// פונקציה לעדכון מכירה
         /// </summary>
         private static void UpdateSale()
         {
+            Console.WriteLine("insert id for update sale");
+            string? input = Console.ReadLine();
 
+            if (int.TryParse(input, out int id))
+            {
+                Sale sale = AskSale(id);
+                s_dal.Sale.Update(sale);
+                Console.WriteLine("sale updated");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid integer ID.");
+            }
         }
         /// <summary>
         /// פונקציה לעדכון לקוח
         /// </summary>
         private static void UpdateCustomer()
         {
+            Console.WriteLine("insert id for update customer");
+            string? input = Console.ReadLine();
+
+            if (int.TryParse(input, out int id))
+            {
+                Customer customer = AskCustomer(id);
+                s_dal.Customer.Update(customer);
+                Console.WriteLine("customer updated");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid integer ID.");
+            }
 
         }
         /// <summary>
@@ -297,14 +357,14 @@ namespace DalTest
         /// פונקציה לשאילת פרטי לקוח מהמשתמש
         /// </summary>
         /// <returns></returns>
-        private static Customer Askcustomer()
+        private static Customer AskCustomer(int code = 0)
         {
             int id;
             string name;
             string address;
             string phone;
             Console.WriteLine("Enter id of the customer");
-            if (int.TryParse(Console.ReadLine(), out id)) id = 0;
+             int.TryParse(Console.ReadLine(), out id);
             Console.WriteLine("Enter name of the customer");
             name = Console.ReadLine();
             Console.WriteLine("Enter address of the customer");

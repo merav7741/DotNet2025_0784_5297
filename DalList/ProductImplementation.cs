@@ -1,6 +1,9 @@
-﻿using Dal;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using Dal;
 using DalApi;
 using DO;
+using Tools;
 using static Dal.DataSource;
 
 namespace Dal;
@@ -17,16 +20,12 @@ internal class ProductImplementation : IProduct
     /// <returns></returns>
     public int Create(Product item)
     {
-        for (int i = 0; i < DataSource.products.Count; i++)
-        {
-            if (DataSource.products[i] != null && DataSource.products[i].Id == item.Id)
-            {
-                throw new InvalidOperationException("לקוח זה כבר קיים ברשימת המוצרים");
-            }
-        }
-
-        DataSource.products.Add(item);
-        return item.Id;
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start create new product");
+        int newId = DataSource.Config.NextProduct;
+        Product newProduct = item with { Id = newId };
+        DataSource.products.Add(newProduct);
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end create new product succesfull");
+        return newId;
     }
 
     /// <summary>
@@ -36,36 +35,72 @@ internal class ProductImplementation : IProduct
     /// <param name="id"></param>
     public void Delete(int id)
     {
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start delete  product");
         var productToDelete = DataSource.products.FirstOrDefault(product => product.Id == id);
 
         if (productToDelete == null)
         {
-            throw new InvalidOperationException($"!!!מוצר זה לא נמצא");
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant delete the product because  id not exists");
+            throw new DalNotExistException("The product not exists in products list");
         }
 
         DataSource.products.Remove(productToDelete);
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end delete product succesfull");
+
     }
     /// <summary>
     /// פונקציה המקבלת ID ומחזירה את המוצר המבוקש
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public Product? Read(int id)
+    public Product Read(int id)
     {
-        foreach (Product product in DataSource.products)
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read with id product");
+        var productRead = DataSource.products.FirstOrDefault(product => product.Id == id);
+        if (productRead == null)
         {
-            if (product.Id == id)
-                return product;
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read  product because  not found customer with this filter");
+            throw new DalNotExistException("The product not exists in products list");
         }
-        return null;
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read with id product succesfull");
+        return productRead;
+
     }
+    /// <summary>
+    /// פוקציה קריאה לפי תנאי מסוים
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    /// <exception cref="DalNotExistException"></exception>
+    public Product? Read(Func<Product, bool> filter)
+    {
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read with filter product");
+        var productRead = DataSource.products.FirstOrDefault(C => filter(C!));
+        if (productRead == null)
+        {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read with filter  product because  not found product with this filter");
+            throw new DalNotExistException("Not Found product with this filter in products list");
+        }
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "Eror cant read with filter product succesfull");
+        return productRead;
+    }
+
     /// <summary>
     /// פונקציה המחזירה את מערך המוצרים
     /// </summary>
     /// <returns></returns>
-    public List<Product> ReadAll()
+    public List<Product?> ReadAll(Func<Product, bool>? filter)
     {
-        return DataSource.products == null ? null : DataSource.products;
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "start read all product");
+        if (filter == null)
+        {
+            LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read all product return full products list becausu the filter is null");
+            return new List<Product?>(DataSource.products);
+        }
+        var product = DataSource.products.Where(p => filter(p!));
+        LogManager.WriteToLog(MethodBase.GetCurrentMethod().Name, MethodBase.GetCurrentMethod().DeclaringType.FullName, "end read all product succesfull");
+        return product.ToList();
+
     }
 
     /// <summary>
@@ -74,22 +109,11 @@ internal class ProductImplementation : IProduct
     /// <param name="item"></param>
     public void Update(Product item)
     {
-        bool f = false;
-        foreach (Product product in DataSource.products)
+        if (DataSource.products.Any(c => c?.Id == item.Id))
         {
-            if (product.Id == item.Id)
-            {
-                f = true;
-                DataSource.products.Remove(product);
-            }
+            Delete(item.Id);
         }
-        if (f)
-        {
-            DataSource.products.Add(item);
-            return;
-        }
-        throw new Exception("לא נמצע מוצר זהה לעדכון");
-
+        DataSource.products.Add(item);
     }
 }
 
