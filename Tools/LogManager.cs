@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Tools
-{
+{   ///check if malka succeed connect github
     /// <summary>
     /// מחלקה לניהול הלוגים, כל פונקציה שמבקשת לכתוב ללוג תשתמש בפונקציה WriteToLog שמקבלת את שם הפונקציה, שם הפרויקט וההודעה לכתיבה
     /// </summary>
     public static class LogManager
     {
+        public static string check = "malkaConnect";
         private static string Log = "Log";
 
         public static string GetFolder()
