@@ -9,7 +9,7 @@ namespace DalXml
 {
     internal class Config
     {
-        private string configurationFileName = "../xml/data-config.xml";
+        private static string configurationFileName = "../xml/data-config.xml";
         public static int ProductNum
         {
             get
