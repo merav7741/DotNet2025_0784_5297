@@ -17,7 +17,10 @@ namespace DalTest
         /// <summary>
         /// מופע של Dal לגישה לנתונים
         /// </summary>
-        static readonly IDal s_dal = new Dal.DalList();
+        //static readonly IDal s_dal = new Dal.DalList();
+        //שגיאה לבדוק איך מגדירים?
+        static readonly IDal s_dal = DalXml.Instance;
+
         private static void Main(string[] args)
         {
             try

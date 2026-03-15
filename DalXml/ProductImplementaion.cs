@@ -11,7 +11,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Dal
 {
-    internal class ProductImplementaion : IProduct
+    internal class ProductImplementation : IProduct
     {
         /// <summary>
         /// נתיב קובץ ה-XML של המוצרים
@@ -25,6 +25,7 @@ namespace Dal
         public int Create(Product item)
         {
             XElement productList = XElement.Load(PRODUCTS_FILE_PATH);
+            //שגיאה לבדוק למה ?
             int id = DalXml.Config.ProductNum;
             productList.Add(new XElement("Product",
                 new XElement("ID", id),
