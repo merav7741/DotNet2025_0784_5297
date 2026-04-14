@@ -24,17 +24,19 @@ namespace Dal
         /// <returns></returns>
         public int Create(Product item)
         {
-            XElement productList = XElement.Load(PRODUCTS_FILE_PATH);
-            //שגיאה לבדוק למה ?
-            int id = DalXml.Config.ProductNum;
-            productList.Add(new XElement("Product",
-                new XElement("ID", id),
-                new XElement("Name", item.Name),
-                new XElement("Category", item.Category),
-                new XElement("Price", item.Price),
-                new XElement("InStock", item.CountStock)));
-            productList.Save(PRODUCTS_FILE_PATH);
+            //XElement productList = XElement.Load(PRODUCTS_FILE_PATH);
+            ////שגיאה לבדוק למה ?
+            //int id = DalXml.Config.ProductNum;
+            //productList.Add(new XElement("Product",
+            //    new XElement("ID", id),
+            //    new XElement("Name", item.Name),
+            //    new XElement("Category", item.Category),
+            //    new XElement("Price", item.Price),
+            //    new XElement("InStock", item.CountStock)));
+            //productList.Save(PRODUCTS_FILE_PATH);
+            int id = 5;
             return id;
+
         }
         /// <summary>
         /// מחיקת מוצר מהקובץ ה-XML לפי מזהה המוצר

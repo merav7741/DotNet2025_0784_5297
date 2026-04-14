@@ -19,8 +19,7 @@ namespace DalTest
         /// </summary>
         //static readonly IDal s_dal = new Dal.DalList();
         //שגיאה לבדוק איך מגדירים?
-        static readonly IDal s_dal = DalXml.Instance;
-
+        static readonly IDal s_dal = DalApi.Factory.Get;
         private static void Main(string[] args)
         {
             try

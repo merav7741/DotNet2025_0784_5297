@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,19 @@ namespace Dal
 {
     internal sealed class DalXml : IDal
     {
-        //readonly ?? 
-        private static readonly DalXml instance = new DalXml();
-        public static DalXml Instance => instance;
+       
+        private static  DalXml _instance = new DalXml();
+        public static DalXml Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new DalList();
+                }
+                return _instance;
+            }
+        }
         private DalXml()
         {
 
