@@ -18,7 +18,7 @@ namespace Dal
             {
                 if (_instance == null)
                 {
-                    _instance = new DalList();
+                    _instance = new DalXml();
                 }
                 return _instance;
             }
