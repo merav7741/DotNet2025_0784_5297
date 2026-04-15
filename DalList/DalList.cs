@@ -5,28 +5,21 @@ namespace Dal
 {
     internal sealed class DalList : IDal
     {
-        public IProduct Product => new ProductImplementation();
-        public ISale Sale => new SaleImplementation();
-        public ICustomer Customer => new CustomerImplementation();
+        
+        private static readonly DalList instance = new DalList();
+        public static DalList Instance { get { return instance; } }
 
         private DalList()
         {
 
         }
 
-        private static DalList _instance = new DalList();
-        public DalList Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new DalList();
-                }
-                return _instance;
-            }
-        }
+        public IProduct Product => new ProductImplementation();
+        public ISale Sale => new SaleImplementation();
+        public ICustomer Customer => new CustomerImplementation();
 
-       
+      
+
+
     }
 }

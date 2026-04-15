@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalXml", "DalXml\DalXml.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xml", "xml", "{8515B2BA-3FB1-4A74-B73D-8FC0AE910E7F}"
 	ProjectSection(SolutionItems) = preProject
-		xml\dal-config.xml.txt = xml\dal-config.xml.txt
+		xml\dal-config.xml = xml\dal-config.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{0D9BDAD9-ABBA-406B-984A-72DBB5DCA762}"

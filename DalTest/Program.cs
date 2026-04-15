@@ -19,13 +19,16 @@ namespace DalTest
         /// </summary>
         //static readonly IDal s_dal = new Dal.DalList();
         //שגיאה לבדוק איך מגדירים?
-        static readonly IDal s_dal = DalApi.Factory.Get;
+     
+        //private?
+        static readonly DalApi.IDal s_dal = DalApi.Factory.Get;
+
         private static void Main(string[] args)
         {
             try
             {
                 int choice;
-                Initialization.Initialize(s_dal);
+                Initialization.Initialize();
                 while ((choice = PrintMainMenu()) != 0)
                 {
                     switch (choice)

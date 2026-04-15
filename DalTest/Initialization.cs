@@ -8,7 +8,7 @@ public static class Initialization
    /// <summary>
    /// רשימה סטטית שתכיל את רשימות הנתונים
    /// </summary>
-    private static IDal s_dal;
+    private static readonly DalApi.IDal s_dal = DalApi.Factory.Get;
     private static List<int> lst = new List<int>();
 
     /// <summary>
@@ -50,9 +50,7 @@ public static class Initialization
     }
 
 
-    public static void Initialize(IDal dal)
-    {
-        s_dal = DalApi.Factory.Get;
+public static void Initialize()    {
 
         CreateProducts();
         CreateCustomers();
