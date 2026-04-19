@@ -1,10 +1,13 @@
-﻿namespace BlTest
+using BO;
+
+namespace BlTest;
+
+internal class Program
 {
-    internal class Program
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+    static void Main()
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello, World!");
-        }
+        Console.WriteLine("BlTest is ready");
     }
 }

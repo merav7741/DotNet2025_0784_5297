@@ -1,12 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace BO;
 
-namespace BO
+[Serializable]
+public class BlNotExistException : Exception
 {
-    internal class Exceptions
-    {
-    }
+    public BlNotExistException(string? message) : base(message) { }
+    public BlNotExistException(string message, Exception innerException) : base(message, innerException) { }
+}
+
+[Serializable]
+public class BlAlreadyExistsException : Exception
+{
+    public BlAlreadyExistsException(string? message) : base(message) { }
+    public BlAlreadyExistsException(string message, Exception innerException) : base(message, innerException) { }
+}
+
+[Serializable]
+public class BlInvalidInputException : Exception
+{
+    public BlInvalidInputException(string? message) : base(message) { }
+    public BlInvalidInputException(string message, Exception innerException) : base(message, innerException) { }
+}
+
+[Serializable]
+public class BlOperationException : Exception
+{
+    public BlOperationException(string? message) : base(message) { }
+    public BlOperationException(string message, Exception innerException) : base(message, innerException) { }
 }
