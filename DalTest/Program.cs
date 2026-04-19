@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Reflection;
 using Tools;
 
+
 namespace DalTest
 
 {
@@ -22,6 +23,7 @@ namespace DalTest
      
         //private?
         static readonly DalApi.IDal s_dal = DalApi.Factory.Get;
+
 
         private static void Main(string[] args)
         {
