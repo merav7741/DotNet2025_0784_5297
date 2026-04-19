@@ -9,11 +9,22 @@ namespace BlImplementation
 {
     internal class Bl : IBl
     {
-        public DalApi.IProduct iProduct => throw new NotImplementedException();
-        public BlApi.ICustomer iCustomer => throw new NotImplementedException();
-        public BlApi.ISale iSale => throw new NotImplementedException();
-        public IOrder iOrder => throw new NotImplementedException();
+        private readonly DalApi.IProduct _product;
+        private readonly BlApi.ICustomer _customer;
+        private readonly BlApi.ISale _sale;
+        private readonly IOrder _order;
 
-      
+        public Bl(DalApi.IProduct product, BlApi.ICustomer customer, BlApi.ISale sale, IOrder order)
+        {
+            _product = product;
+            _customer = customer;
+            _sale = sale;
+            _order = order;
+        }
+
+        public IProduct iProduct => (IProduct)_product; 
+        public ICustomer iCustomer => _customer;
+        public ISale iSale => _sale;
+        public IOrder iOrder => _order;
     }
 }
