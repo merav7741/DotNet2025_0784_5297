@@ -7,13 +7,27 @@ using BlApi;
 
 namespace BlImplementation
 {
-    internal class Bl : IBl
+    namespace BlImplementation
     {
-        public DalApi.IProduct iProduct => throw new NotImplementedException();
-        public BlApi.ICustomer iCustomer => throw new NotImplementedException();
-        public BlApi.ISale iSale => throw new NotImplementedException();
-        public IOrder iOrder => throw new NotImplementedException();
+        internal class Bl : IBl
+        {
 
-      
+            //public IProduct iProduct => new ProductImplementation();
+
+            //public ICustomer iCustomer => new CustomerImplementation();
+
+            //public ISale iSale => new SaleImplementation();
+
+            //public IOrder iOrder => new OrderImplementation();
+            public IProduct iProduct => throw new NotImplementedException();
+
+            public ICustomer iCustomer => throw new NotImplementedException();
+
+            public ISale iSale => throw new NotImplementedException();
+
+            public IOrder iOrder => throw new NotImplementedException();
+        }
     }
+
 }
+

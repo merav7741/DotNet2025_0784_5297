@@ -7,13 +7,14 @@ using BlImplementation;
 
 namespace BlApi
 {
-    public class Factory
+    public static class Factory
     {
-
         public static IBl Get()
         {
-            IBl bI = new Bl();
-            return bI;
+            //return new BlImplementation.Bl();
+            
         }
     }
 }
+
+

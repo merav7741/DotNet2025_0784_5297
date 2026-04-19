@@ -43,8 +43,7 @@ namespace BO
             sb.AppendLine("}");
             return sb.ToString();
         }
-      
-                                
+
         public static BO.Customer ConvertDoCustomerToBo(this DO.Customer customer)
         {
             return new BO.Customer
