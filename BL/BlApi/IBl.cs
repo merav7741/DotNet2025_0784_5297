@@ -10,7 +10,7 @@ namespace BlApi
 {
     public interface IBl
     {
-        DalApi.IProduct iProduct { get; }
+        IProduct iProduct { get; }
         ICustomer iCustomer { get; }
         ISale iSale { get; }
         IOrder iOrder { get; }

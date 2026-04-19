@@ -14,9 +14,6 @@ namespace BlImplementation
         public BlApi.ISale iSale => throw new NotImplementedException();
         public IOrder iOrder => throw new NotImplementedException();
 
-        //public IProduct iProduct => new ProductImplementation();
-        //public ICustomer iCustomer => new CustomerImplementation();
-        //public ISale iSale => new SaleImplementation();
-        //public IOrder iOrder => new OrderImplementation();
+      
     }
 }
