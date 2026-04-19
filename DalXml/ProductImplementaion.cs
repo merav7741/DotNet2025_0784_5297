@@ -8,6 +8,8 @@ using DalApi;
 using System.Reflection;
 using DO;
 using System.Reflection.Metadata.Ecma335;
+using System.Data.Common;
+using DalXml;
 
 namespace Dal
 {
@@ -24,19 +26,16 @@ namespace Dal
         /// <returns></returns>
         public int Create(Product item)
         {
-            //XElement productList = XElement.Load(PRODUCTS_FILE_PATH);
-            ////שגיאה לבדוק למה ?
-            //int id = DalXml.Config.ProductNum;
-            //productList.Add(new XElement("Product",
-            //    new XElement("ID", id),
-            //    new XElement("Name", item.Name),
-            //    new XElement("Category", item.Category),
-            //    new XElement("Price", item.Price),
-            //    new XElement("InStock", item.CountStock)));
-            //productList.Save(PRODUCTS_FILE_PATH);
-            int id = 5;
+            XElement productList = XElement.Load(PRODUCTS_FILE_PATH);
+            int id =  DalXml.Config.ProductNum;
+            productList.Add(new XElement("Product",
+                new XElement("ID", id),
+                new XElement("Name", item.Name),
+                new XElement("Category", item.Category),
+                new XElement("Price", item.Price),
+                new XElement("InStock", item.CountStock)));
+            productList.Save(PRODUCTS_FILE_PATH);
             return id;
-
         }
         /// <summary>
         /// מחיקת מוצר מהקובץ ה-XML לפי מזהה המוצר
@@ -126,7 +125,6 @@ namespace Dal
                 IsExist.Element("Category").SetValue(item.Category);
                 IsExist.Element("Price").SetValue(item.Price);
                 IsExist.Element("CountStock").SetValue(item.CountStock);
-
                 productList.Save(PRODUCTS_FILE_PATH);
             }
         }
