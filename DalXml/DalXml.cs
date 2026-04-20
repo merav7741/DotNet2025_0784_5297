@@ -1,37 +1,14 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Diagnostics;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
 using DalApi;
 
-namespace Dal
+namespace Dal;
+
+internal sealed class DalXml : IDal
 {
-    internal sealed class DalXml : IDal
-    {
-       
-        private static  DalXml _instance = new DalXml();
-        public static DalXml Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new DalXml();
-                }
-                return _instance;
-            }
-        }
-        private DalXml()
-        {
+    private static readonly DalXml _instance = new();
+    public static DalXml Instance => _instance;
+    private DalXml() { }
 
-        }
-        public ICustomer Customer => new CustomerImplementation();
-
-        public ISale Sale => new SaleImplementation();
-
-        public IProduct Product => new ProductImplementation();
-
-    }
+    public ICustomer Customer => new CustomerImplementation();
+    public ISale Sale => new SaleImplementation();
+    public IProduct Product => new ProductImplementation();
 }

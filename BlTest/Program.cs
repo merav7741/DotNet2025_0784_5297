@@ -1,8 +1,12 @@
 ﻿using BlApi;
 
 namespace BlTest
+﻿using BlApi;
+namespace BlTest
 {
-    internal class Program
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+    static void Main()
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get;
         static void Main()
@@ -80,6 +84,5 @@ namespace BlTest
         {
 
         }
-
     }
 }

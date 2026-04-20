@@ -1,96 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using DalApi;
 using DO;
 
-namespace Dal
+namespace Dal;
+
+internal class SaleImplementation : ISale
 {
+    private const string SALES_FILE_PATH = "../xml/sales.xml";
 
-    internal class SaleImplementation : ISale
+    public int Create(Sale s)
     {
-        const string SALES_FILE_PATH = "../xml/sales.xml";
+        int myId = Config.SaleNum;
+        s = s with { Id = myId };
+        List<Sale> salesList = Load();
+        salesList.Add(s);
+        Save(salesList);
+        return s.Id;
+    }
 
-        public int Create(Sale s)
-        {
-            int myId = DalXml.Config.SaleNum;
-            s = s with { Id = myId };
-            List<Sale> salesList;
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Sale>));
-            using (StreamReader sr = new StreamReader(SALES_FILE_PATH))
-                salesList = serializer.Deserialize(sr) as List<Sale>;
-            salesList.Add(s);
-            using (StreamWriter sw = new StreamWriter(SALES_FILE_PATH))
-                serializer.Serialize(sw, salesList);
-            return s.Id;
-        }
+    public void Delete(int id)
+    {
+        List<Sale> salesList = Load();
+        Sale? sale = salesList.FirstOrDefault(x => x.Id == id);
+        if (sale == null)
+            throw new DalNotExistException($"Sale with id: {id} was not found");
+        salesList.Remove(sale);
+        Save(salesList);
+    }
 
-        public void Delete(int id)
-        {
-            List<Sale> salesList;
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Sale>));
-            using (StreamReader sr = new StreamReader(SALES_FILE_PATH))
-                salesList = serializer.Deserialize(sr) as List<Sale>;
-            if (salesList.Exists(sale => sale != null && sale.Id == id))
-            {
-                salesList.Remove(salesList.Find(sale => sale!.Id == id));
-                using (StreamWriter sw = new StreamWriter(SALES_FILE_PATH))
-                    serializer.Serialize(sw, salesList);
-            }
-            else
-                throw new DalNotExistException($"Sale with id: {id} was not found");
-        }
+    public Sale? Read(int id)
+    {
+        List<Sale> salesList = Load();
+        return salesList.FirstOrDefault(x => x.Id == id) ?? throw new DalNotExistException($"Sale with id: {id} was not found");
+    }
 
-        public Sale? Read(int id)
-        {
-            List<Sale> salesList;
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Sale>));
-            using (StreamReader sr = new StreamReader(SALES_FILE_PATH))
-                salesList = serializer.Deserialize(sr) as List<Sale>;
-            if (salesList.Exists(sale => sale != null && sale.Id == id))
-                return salesList.Find(sale => sale!.Id == id);
-            else
-                throw new DalNotExistException($"Sale with id: {id} was not found");
-        }
+    public Sale? Read(Func<Sale, bool> filter)
+    {
+        return Load().FirstOrDefault(filter);
+    }
 
-        public Sale? Read(Func<Sale, bool> filter)
-        {
-            List<Sale> salesList;
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Sale>));
-            using (StreamReader sr = new StreamReader(SALES_FILE_PATH))
-                salesList = serializer.Deserialize(sr) as List<Sale>;
-            return salesList.FirstOrDefault(filter!);
-        }
+    public List<Sale> ReadAll(Func<Sale, bool>? filter = null)
+    {
+        List<Sale> salesList = Load();
+        return filter == null ? salesList : salesList.Where(filter).ToList();
+    }
 
-        public List<Sale?> ReadAll(Func<Sale, bool>? filter = null)
-        {
-            List<Sale> salesList;
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Sale>));
-            using (StreamReader sr = new StreamReader(SALES_FILE_PATH))
-                salesList = serializer.Deserialize(sr) as List<Sale>;
-            if (filter != null)
-                return salesList!.Where<Sale>(filter).ToList()!;
-            return new List<Sale?>(salesList != null ? salesList : new List<Sale?>())!;
-        }
+    public void Update(Sale sale)
+    {
+        List<Sale> salesList = Load();
+        int index = salesList.FindIndex(s => s.Id == sale.Id);
+        if (index < 0)
+            throw new DalNotExistException($"Sale with id: {sale.Id} was not found");
+        salesList[index] = sale;
+        Save(salesList);
+    }
 
-        public void Update(Sale sale)
-        {
-            List<Sale> salesList;
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Sale>));
-            using (StreamReader sr = new StreamReader(SALES_FILE_PATH))
-                salesList = serializer.Deserialize(sr) as List<Sale>;
-            if (salesList.Exists(s => s != null && s.Id == sale.Id))
-            {
-                salesList.Remove(salesList.Find(s => s.Id == sale.Id));
-                salesList.Add(sale);
-                using (StreamWriter sw = new StreamWriter(SALES_FILE_PATH))
-                    serializer.Serialize(sw, salesList);
-            }
-            else
-                throw new DalNotExistException($"Sale with id: {sale.Id} was not found");
-        }
+    private static List<Sale> Load()
+    {
+        XmlSerializer serializer = new(typeof(List<Sale>));
+        using StreamReader sr = new(SALES_FILE_PATH);
+        return serializer.Deserialize(sr) as List<Sale> ?? new List<Sale>();
+    }
+
+    private static void Save(List<Sale> salesList)
+    {
+        XmlSerializer serializer = new(typeof(List<Sale>));
+        using StreamWriter sw = new(SALES_FILE_PATH);
+        serializer.Serialize(sw, salesList);
     }
 }

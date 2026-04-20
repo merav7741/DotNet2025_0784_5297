@@ -1,6 +1,5 @@
-﻿using BlApi;
+using BlApi;
 using BO;
-
 namespace BlImplementation;
 
 internal class CustomerImplementation : ICustomer
@@ -44,40 +43,36 @@ internal class CustomerImplementation : ICustomer
         }
     }
 
-    public List<BO.Customer> ReadAll(Func<BO.Customer, bool>? filter = null)
-    {
-        var customers = _dal.Customer
-            .ReadAll()
-            .Select(c => c.ConvertDoCustomerToBo());
+            if (customer == null)
+                throw new BO.BlDoesNotExistException($"Customer {id} not found");
 
-        return filter == null
-            ? customers.ToList()
-            : customers.Where(filter).ToList();
-    }
-
-    public void Update(BO.Customer item)
-    {
-        _dal.Customer.Update(item.ConvertBoCustomerToDo());
-    }
-
-    public void Delete(int id)
-    {
-        _dal.Customer.Delete(id);
+            return customer.ConvertDoCustomerToBo();
+        }
+        catch (DO.DalNotExistException ex)
+        {
+            throw new BO.BlDoesNotExistException("Customer not found", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new BO.BlGeneralException("General error", ex);
+        }
     }
 
     public BO.Customer? Read(Func<BO.Customer, bool>? filter)
     {
-        if (filter == null)
-            return null;
-
-        return _dal.Customer
-            .ReadAll()
-            .Select(c => c.ConvertDoCustomerToBo())
-            .FirstOrDefault(filter);
+        if (filter == null) return null;
+        return _dal.Customer.ReadAll().Select(c => c.ConvertDoCustomerToBo()).FirstOrDefault(filter);
     }
 
-    public bool IsExist(int id)
+    public List<BO.Customer> ReadAll(Func<BO.Customer, bool>? filter = null)
     {
-        return _dal.Customer.Read(id) != null;
+        var customers = _dal.Customer.ReadAll().Select(c => c.ConvertDoCustomerToBo());
+        return filter == null ? customers.ToList() : customers.Where(filter).ToList();
     }
+
+    public void Update(BO.Customer item) => _dal.Customer.Update(item.ConvertBoCustomerToDo());
+
+    public void Delete(int id) => _dal.Customer.Delete(id);
+
+    public bool IsExist(int id) => _dal.Customer.Read(id) != null;
 }
