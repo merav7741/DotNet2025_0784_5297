@@ -1,22 +1,13 @@
-<<<<<<< HEAD
-using BO;
-
-namespace BlTest;
-
-internal class Program
-=======
 ﻿using BlApi;
 
 namespace BlTest
->>>>>>> f44864669003981d2982c478576812a2ba3074fb
+﻿using BlApi;
+namespace BlTest
 {
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
     static void Main()
     {
-<<<<<<< HEAD
-        Console.WriteLine("BlTest is ready");
-=======
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get;
         static void Main()
         {
@@ -93,7 +84,5 @@ namespace BlTest
         {
 
         }
-
->>>>>>> f44864669003981d2982c478576812a2ba3074fb
     }
 }

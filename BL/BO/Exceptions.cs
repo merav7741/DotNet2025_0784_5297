@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 namespace BO;
 
 [Serializable]
@@ -27,6 +26,18 @@ public class BlOperationException : Exception
 {
     public BlOperationException(string? message) : base(message) { }
     public BlOperationException(string message, Exception innerException) : base(message, innerException) { }
+}
+
+[Serializable]
+public class BlAlreadyExistsException : Exception
+{
+    public BlAlreadyExistsException(string? message) : base(message) { }
+
+    public BlAlreadyExistsException(string message, Exception innerException)
+        : base(message, innerException) { }
+}
+
+[Serializable]
 =======
 ﻿namespace BO;
 
@@ -37,7 +48,6 @@ public class BlDoesNotExistException : Exception
 
     public BlDoesNotExistException(string message, Exception innerException)
         : base(message, innerException) { }
->>>>>>> f44864669003981d2982c478576812a2ba3074fb
 }
 
 [Serializable]
