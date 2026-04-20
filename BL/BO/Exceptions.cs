@@ -1,80 +1,46 @@
+
+using System.Text.Json.Serialization;
+
 namespace BO;
 
 [Serializable]
-public class BlNotExistException : Exception
+public class BlIdExistsException : Exception
 {
-    public BlNotExistException(string? message) : base(message) { }
-    public BlNotExistException(string message, Exception innerException) : base(message, innerException) { }
+    public BlIdExistsException(string? message) : base(message) { }
+    public BlIdExistsException(string message, Exception innerExeption) : base(message, innerExeption) { }
+
+}
+[Serializable]
+public class BlNotfoundObjectWithThisFilterException : Exception
+{
+    public BlNotfoundObjectWithThisFilterException(string? message) : base(message) { }
+    public BlNotfoundObjectWithThisFilterException(string? message, Exception innerException) : base(message, innerException) { }
+
 }
 
 [Serializable]
-public class BlAlreadyExistsException : Exception
+public class BLIdNotFoundException : Exception
 {
-    public BlAlreadyExistsException(string? message) : base(message) { }
-    public BlAlreadyExistsException(string message, Exception innerException) : base(message, innerException) { }
+    public BLIdNotFoundException(string messege) : base(messege) { }
+    public BLIdNotFoundException(string messege, Exception innerException) : base(messege, innerException) { }
 }
-
 [Serializable]
-public class BlInvalidInputException : Exception
+
+public class FailedToDeleteFolder : Exception
 {
-    public BlInvalidInputException(string? message) : base(message) { }
-    public BlInvalidInputException(string message, Exception innerException) : base(message, innerException) { }
-}
+    public FailedToDeleteFolder(string messege) : base(messege) { }
+    //public FailedToDeleteFolder(string messege,Exception innerException) : base(messege, innerException) { }
 
+}
 [Serializable]
-public class BlOperationException : Exception
+public class BLThereIsNotEnoughInStock : Exception
 {
-    public BlOperationException(string? message) : base(message) { }
-    public BlOperationException(string message, Exception innerException) : base(message, innerException) { }
+    public BLThereIsNotEnoughInStock(string messege) : base(messege) { }
 }
-
 [Serializable]
-public class BlAlreadyExistsException : Exception
+public class BlInputNotCorectException : Exception
 {
-    public BlAlreadyExistsException(string? message) : base(message) { }
-
-    public BlAlreadyExistsException(string message, Exception innerException)
-        : base(message, innerException) { }
+    public BlInputNotCorectException(string massage) : base(massage) { }
+    public BlInputNotCorectException(string massage, Exception innerException) : base(massage, innerException) { }
 }
-
-[Serializable]
-=======
-﻿namespace BO;
-
-[Serializable]
-public class BlDoesNotExistException : Exception
-{
-    public BlDoesNotExistException(string? message) : base(message) { }
-
-    public BlDoesNotExistException(string message, Exception innerException)
-        : base(message, innerException) { }
-}
-
-[Serializable]
-public class BlAlreadyExistsException : Exception
-{
-    public BlAlreadyExistsException(string? message) : base(message) { }
-
-    public BlAlreadyExistsException(string message, Exception innerException)
-        : base(message, innerException) { }
-}
-
-[Serializable]
-public class BlInvalidInputException : Exception
-{
-    public BlInvalidInputException(string? message) : base(message) { }
-
-    public BlInvalidInputException(string message, Exception innerException)
-        : base(message, innerException) { }
-}
-
-[Serializable]
-public class BlGeneralException : Exception
-{
-    public BlGeneralException(string? message) : base(message) { }
-
-    public BlGeneralException(string message, Exception innerException)
-        : base(message, innerException) { }
-}
-
 

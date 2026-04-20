@@ -17,7 +17,6 @@ internal class OrderImplementation : IOrder
             .Select(s => s.ConvertDoSaleToSaleInProduct())
             .OrderBy(s => s.amountSaleInProduct == 0 ? double.MaxValue : s.priceSaleInProduct / s.amountSaleInProduct)
             .ToList();
-
         productInOrder.listSaleToProductInOrder = sales;
     }
 
@@ -26,7 +25,6 @@ internal class OrderImplementation : IOrder
         int count = productInOrder.amountProductInOrder;
         double total = 0;
         List<BO.SaleInProduct> usedSales = new();
-
         foreach (var sale in productInOrder.listSaleToProductInOrder)
         {
             if (sale.amountSaleInProduct <= 0 || count < sale.amountSaleInProduct)
@@ -38,7 +36,6 @@ internal class OrderImplementation : IOrder
             usedSales.Add(sale);
             if (count == 0) break;
         }
-
         total += count * productInOrder.basePriceProductInOrder;
         productInOrder.finalPriceProductInOrder = total;
         productInOrder.listSaleToProductInOrder = usedSales;
@@ -52,26 +49,24 @@ internal class OrderImplementation : IOrder
     public List<BO.SaleInProduct> AddProductToOrder(BO.Order order, int productId, int countOrder)
     {
         if (countOrder <= 0)
-            throw new BO.BlInvalidInputException("Amount must be greater than zero");
+            throw new BO.BLThereIsNotEnoughInStock("Amount must be greater than zero");
 
-        var doProduct = _dal.Product.Read(productId) ?? throw new BO.BlNotExistException("Product not found");
-
+        var doProduct = _dal.Product.Read(productId) ?? throw new BO.BLIdNotFoundException("Product not found");
         var productInOrder = order.listProductInOrder.FirstOrDefault(p => p.idProductInOrder == productId);
 
         if (productInOrder != null)
         {
             if (doProduct.CountStock < productInOrder.amountProductInOrder + countOrder)
-                throw new BO.BlOperationException("Not enough in stock");
+                throw new BO.BLThereIsNotEnoughInStock("Not enough in stock");
             productInOrder.amountProductInOrder += countOrder;
         }
         else
         {
             if (doProduct.CountStock < countOrder)
-                throw new BO.BlOperationException("Not enough in stock");
+                throw new BO.BLThereIsNotEnoughInStock("Not enough in stock");
             productInOrder = doProduct.ConvertDoProductToProductInOrder(countOrder);
             order.listProductInOrder.Add(productInOrder);
         }
-
         SearchSaleForProduct(productInOrder, order.isPreferedCustomer);
         CalcTotalPriceForProduct(productInOrder);
         CalcTotalPrice(order);
@@ -82,9 +77,9 @@ internal class OrderImplementation : IOrder
     {
         foreach (var product in order.listProductInOrder)
         {
-            var doProduct = _dal.Product.Read(product.idProductInOrder) ?? throw new BO.BlNotExistException("Product not found");
+            var doProduct = _dal.Product.Read(product.idProductInOrder) ?? throw new BO.BLIdNotFoundException("Product not found");
             if (doProduct.CountStock < product.amountProductInOrder)
-                throw new BO.BlOperationException("Not enough in stock");
+                throw new BO.BLThereIsNotEnoughInStock("Not enough in stock");
 
             var updatedProduct = doProduct with { CountStock = doProduct.CountStock - product.amountProductInOrder };
             _dal.Product.Update(updatedProduct);

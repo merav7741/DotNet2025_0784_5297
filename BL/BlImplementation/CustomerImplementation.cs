@@ -12,67 +12,77 @@ internal class CustomerImplementation : ICustomer
         try
         {
             return _dal.Customer.Create(item.ConvertBoCustomerToDo());
+
         }
-        catch (DO.DalExsistException ex)
+
+        catch (DO.DalExsistException innerExeption)
         {
-            throw new BO.BlAlreadyExistsException("Customer already exists", ex);
-        }
-        catch (Exception ex)
-        {
-            throw new BO.BlGeneralException("General error", ex);
+            throw new BO.BlIdExistsException("The customer is Exist!", innerExeption);
         }
     }
+  
     public BO.Customer? Read(int id)
     {
         try
         {
-            var customer = _dal.Customer.Read(id);
-
-            if (customer == null)
-                throw new BO.BlDoesNotExistException($"Customer {id} not found");
-
-            return customer.ConvertDoCustomerToBo();
+            return (_dal.Customer.Read(id)).ConvertDoCustomerToBo();
         }
         catch (DO.DalNotExistException ex)
         {
-            throw new BO.BlDoesNotExistException("Customer not found", ex);
+            throw new BO.BLIdNotFoundException("לא נמצא לקוח עם מספר מזהה זה", ex);
         }
-        catch (Exception ex)
-        {
-            throw new BO.BlGeneralException("General error", ex);
-        }
-    }
-
-            if (customer == null)
-                throw new BO.BlDoesNotExistException($"Customer {id} not found");
-
-            return customer.ConvertDoCustomerToBo();
-        }
-        catch (DO.DalNotExistException ex)
-        {
-            throw new BO.BlDoesNotExistException("Customer not found", ex);
-        }
-        catch (Exception ex)
-        {
-            throw new BO.BlGeneralException("General error", ex);
-        }
-    }
-
-    public BO.Customer? Read(Func<BO.Customer, bool>? filter)
-    {
-        if (filter == null) return null;
-        return _dal.Customer.ReadAll().Select(c => c.ConvertDoCustomerToBo()).FirstOrDefault(filter);
     }
 
     public List<BO.Customer> ReadAll(Func<BO.Customer, bool>? filter = null)
     {
-        var customers = _dal.Customer.ReadAll().Select(c => c.ConvertDoCustomerToBo());
-        return filter == null ? customers.ToList() : customers.Where(filter).ToList();
+        var list = _dal.Customer.ReadAll(null)
+            .Select(c => c.ConvertDoCustomerToBo());
+
+        if (filter != null)
+            list = list.Where(filter);
+
+        return list.ToList();
     }
 
-    public void Update(BO.Customer item) => _dal.Customer.Update(item.ConvertBoCustomerToDo());
+    public void Update(BO.Customer item)
+    {
+        _dal.Customer.Update(item.ConvertBoCustomerToDo());
+    }
 
-    public void Delete(int id) => _dal.Customer.Delete(id);
+    public void Delete(int id)
+    {
+        try
+        {
+            _dal.Customer.Delete(id);
+        }
+        catch (DO.DalNotExistException ex)
+        {
+            throw new BO.BLIdNotFoundException("לא נמצא לקוח עם מספר מזהה זה", ex);
+        }
+    }
+    public BO.Customer? Read(Func<BO.Customer, bool>? filter)
+    {
+        try
+        {
+            var list = _dal.Customer.ReadAll(null)
+                        .Select(c => c.ConvertDoCustomerToBo());
 
-    public bool IsExist(int id) => _dal.Customer.Read(id) != null;
+            return list.FirstOrDefault(filter);
+        }
+        catch (DO.DalNotExistException ex)
+        {
+            throw new BO.BlNotfoundObjectWithThisFilterException("לא נמצא לקוח שעונה על תנאי זה", ex);
+
+        }
+    }
+    public bool IsExists(int id)
+    {
+        var list = _dal.Customer.ReadAll(null);
+        return list.Any(c => c.Id == id);
+    }
+
+    public bool IsExist(int id)
+    {
+        throw new NotImplementedException();
+    }
 }
