@@ -29,24 +29,34 @@ internal class CustomerImplementation : ICustomer
         }
         catch (DO.DalNotExistException ex)
         {
-            throw new BO.BLIdNotFoundException("לא נמצא לקוח עם מספר מזהה זה", ex);
+            throw new BO.BLIdNotFoundException("The customere are not Exist!", ex);
         }
     }
 
     public List<BO.Customer> ReadAll(Func<BO.Customer, bool>? filter = null)
     {
-        var list = _dal.Customer.ReadAll(null)
-            .Select(c => c.ConvertDoCustomerToBo());
-
-        if (filter != null)
-            list = list.Where(filter);
-
-        return list.ToList();
+        try
+        {
+            if (filter ==null)
+                return _dal.Customer.ReadAll().Select(s=> s.ConvertDoCustomerToBo()).ToList();
+            return _dal.Customer.ReadAll(s => filter(s.ConvertDoCustomerToBoCustomer())).Select(s => s.ConvertDoCustomerToBoCustomer()).ToList();
+        }
+        catch
+        {
+            throw new BlNotfoundObjectWithThisFilterException("The customeres are not Exist!");
+        }
     }
 
     public void Update(BO.Customer item)
     {
-        _dal.Customer.Update(item.ConvertBoCustomerToDo());
+        try
+        {
+            _dal.Customer.Update(item.ConvertBoCustomerToDo());
+        }
+        catch
+        {
+            throw new BLIdNotFoundException("The customer is not Exist!");
+        }
     }
 
     public void Delete(int id)
@@ -77,12 +87,14 @@ internal class CustomerImplementation : ICustomer
     }
     public bool IsExists(int id)
     {
-        var list = _dal.Customer.ReadAll(null);
-        return list.Any(c => c.Id == id);
-    }
-
-    public bool IsExist(int id)
-    {
-        throw new NotImplementedException();
+        try
+        {
+            _dal.Customer.Read(id);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
