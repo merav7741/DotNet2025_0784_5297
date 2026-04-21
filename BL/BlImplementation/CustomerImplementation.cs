@@ -39,7 +39,7 @@ internal class CustomerImplementation : ICustomer
         {
             if (filter ==null)
                 return _dal.Customer.ReadAll().Select(s=> s.ConvertDoCustomerToBo()).ToList();
-            return _dal.Customer.ReadAll(s => filter(s.ConvertDoCustomerToBoCustomer())).Select(s => s.ConvertDoCustomerToBoCustomer()).ToList();
+            return _dal.Customer.ReadAll(s => filter(s.ConvertDoCustomerToBo())).Select(s => s.ConvertDoCustomerToBo()).ToList();
         }
         catch
         {
@@ -85,7 +85,8 @@ internal class CustomerImplementation : ICustomer
 
         }
     }
-    public bool IsExists(int id)
+
+    public bool IsExist(int id)
     {
         try
         {
