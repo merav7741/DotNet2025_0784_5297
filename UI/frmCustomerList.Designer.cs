@@ -46,7 +46,7 @@
             dgvCustomers.ReadOnly = true;
             dgvCustomers.RowHeadersWidth = 51;
             dgvCustomers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCustomers.Size = new Size(568, 254);
+            dgvCustomers.Size = new Size(538, 254);
             dgvCustomers.TabIndex = 0;
             dgvCustomers.CellContentClick += dgvCustomers_CellContentClick;
             dgvCustomers.MouseDoubleClick += dgvCustomers_MouseDoubleClick;

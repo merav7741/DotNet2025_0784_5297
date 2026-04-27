@@ -8,8 +8,8 @@
   </Customer>
   <Customer>
     <Id>2</Id>
-    <Name>Yael Gershon</Name>
-    <Address>Modiin</Address>
+    <Name>יעל גרשון</Name>
+    <Address>מודיעין</Address>
     <Phone>0556784421</Phone>
   </Customer>
   <Customer>
@@ -35,5 +35,11 @@
     <Name>Lea Booksan</Name>
     <Address>BEitar</Address>
     <Phone>0556784586</Phone>
+  </Customer>
+  <Customer>
+    <Id>1234</Id>
+    <Name> תהילה יאיר</Name>
+    <Address>מודיעין עילית</Address>
+    <Phone>089741723</Phone>
   </Customer>
 </ArrayOfCustomer>

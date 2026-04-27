@@ -6,18 +6,32 @@ namespace Dal;
 
 internal class ProductImplementation : IProduct
 {
-    private const string PATH = @"D:\מירב לימודים יד\C#\project .net\.NET\xml\products.xml";
+    // שימוש בניתוב בטוח ויחסי שמתאים לכל מחשב
+    private static readonly string PATH = Path.Combine(AppContext.BaseDirectory, "xml", "products.xml");
+
     private readonly XmlSerializer serializer = new(typeof(List<Product>));
     private List<Product>? products;
 
-
     private List<Product> LoadList()
     {
+        // בדיקה ויצירה של התיקייה במידה והיא לא קיימת בתיקיית ה-Debug
+        string? dir = Path.GetDirectoryName(PATH);
+        if (dir != null && !Directory.Exists(dir))
+            Directory.CreateDirectory(dir);
+
         if (!File.Exists(PATH))
             return new List<Product>();
 
-        using StreamReader sr = new StreamReader(PATH);
-        return serializer.Deserialize(sr) as List<Product> ?? new List<Product>();
+        try
+        {
+            using StreamReader sr = new StreamReader(PATH);
+            return serializer.Deserialize(sr) as List<Product> ?? new List<Product>();
+        }
+        catch
+        {
+            // אם הקובץ פגום, נחזיר רשימה ריקה
+            return new List<Product>();
+        }
     }
 
     private void SaveList(List<Product> list)
@@ -26,14 +40,11 @@ internal class ProductImplementation : IProduct
         serializer.Serialize(sw, list);
     }
 
-    // =========================
-    // ?? יצירה
-    // =========================
     public int Create(Product item)
     {
         products = LoadList();
 
-        int newId = Config.ProductNum;
+        int newId = Config.NextProductNum;
         Product newItem = item with { Id = newId };
 
         if (products.Any(p => p.Id == newItem.Id))
@@ -49,14 +60,13 @@ internal class ProductImplementation : IProduct
     {
         products = LoadList();
 
-        Product product = products.FirstOrDefault(p => p.Id == id);
+        Product? product = products.FirstOrDefault(p => p.Id == id);
 
         if (product == null)
             throw new DalNotExistException("Product not exists");
 
         return product;
     }
-
 
     public Product? Read(Func<Product, bool> filter)
     {
@@ -77,17 +87,15 @@ internal class ProductImplementation : IProduct
     {
         products = LoadList();
 
-        Product? existing = products.FirstOrDefault(p => p.Id == item.Id);
+        int index = products.FindIndex(p => p.Id == item.Id);
 
-        if (existing == null)
+        if (index < 0)
             throw new DalNotExistException("Product not exists");
 
-        products.Remove(existing);
-        products.Add(item);
+        products[index] = item;
 
         SaveList(products);
     }
-
 
     public void Delete(int id)
     {

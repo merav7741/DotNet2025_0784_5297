@@ -45,4 +45,13 @@
     <StartSale>2026-04-27T15:37:56.9912069+03:00</StartSale>
     <EndSale>2026-05-07T15:37:56.9912166+03:00</EndSale>
   </Sale>
+  <Sale>
+    <Id>60</Id>
+    <ProductId>1032</ProductId>
+    <QuantityForSale>4</QuantityForSale>
+    <SalePrice>100</SalePrice>
+    <IsSaleToAllCustomer>false</IsSaleToAllCustomer>
+    <StartSale>2026-04-07T15:37:56.9912166+03:00</StartSale>
+    <EndSale>2026-05-07T15:37:56.9912166+03:00</EndSale>
+  </Sale>
 </ArrayOfSale>

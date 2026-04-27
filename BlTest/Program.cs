@@ -6,12 +6,12 @@ namespace BlTest;
 
 internal class Program
 {
-    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+    static BlApi.IBl s_bl;
     private static void Main(string[] args)
     {
-
         try
         {
+            s_bl = BlApi.Factory.Get();
             while (true)
             {
                 int select1 = PrintMainMenu();
@@ -49,7 +49,7 @@ internal class Program
 
     private static void OrderMenu()
     {
-        BO.Order currentOrder = new BO.Order{ listProductInOrder = new List<BO.ProductInOrder>() };
+        BO.Order currentOrder = new BO.Order { listProductInOrder = new List<BO.ProductInOrder>() };
 
         Console.WriteLine("Is this a preferred customer? (y/n)");
         currentOrder.isPreferedCustomer = Console.ReadLine()?.ToLower() == "y";
@@ -74,7 +74,9 @@ internal class Program
                         int pId = int.Parse(Console.ReadLine());
                         Console.WriteLine("Enter Amount:");
                         int amount = int.Parse(Console.ReadLine());
+
                         var appliedSales = s_bl.Order.AddProductToOrder(currentOrder, pId, amount);
+                        currentOrder.listProductInOrder = currentOrder.listProductInOrder;
                         s_bl.Order.CalcTotalPrice(currentOrder);
 
                         Console.WriteLine("Product added successfully!");
@@ -100,7 +102,7 @@ internal class Program
                         }
                         s_bl.Order.DoOrder(currentOrder);
                         Console.WriteLine("Order completed successfully!");
-                        return; 
+                        return;
 
                     case 3:
                         Console.WriteLine("\n--- Current Order Status ---");
@@ -108,7 +110,7 @@ internal class Program
                         break;
                 }
             }
-            catch (BlInputNotCorectException ex) 
+            catch (BlInputNotCorectException ex)
             {
                 Console.WriteLine($"Input Error: {ex.Message}");
             }
@@ -145,7 +147,7 @@ internal class Program
                     ReadAllProducts();
                     break;
                 default:
-                    return; 
+                    return;
             }
         }
     }
