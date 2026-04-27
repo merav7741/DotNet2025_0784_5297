@@ -6,7 +6,7 @@ namespace Dal;
 
 internal class ProductImplementation : IProduct
 {
-    private const string PATH = @"../xml/products.xml";
+    private const string PATH = @"D:\מירב לימודים יד\C#\project .net\.NET\xml\products.xml";
     private readonly XmlSerializer serializer = new(typeof(List<Product>));
     private List<Product>? products;
 

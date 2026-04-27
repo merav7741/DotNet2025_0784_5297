@@ -6,7 +6,7 @@ namespace Dal;
 
 internal class SaleImplementation : ISale
 {
-    private const string SALES_FILE_PATH = "../xml/sales.xml";
+    private const string SALES_FILE_PATH = @"D:\מירב לימודים יד\C#\project .net\.NET\xml\sales.xml";
 
     public int Create(Sale s)
     {

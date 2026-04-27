@@ -6,7 +6,7 @@ namespace Dal;
 
 internal class CustomerImplementation : ICustomer
 {
-    private const string CUSTOMERS_FILE_PATH = "../xml/customers.xml";
+    private const string CUSTOMERS_FILE_PATH = @"D:\מירב לימודים יד\C#\project .net\.NET\xml\customers.xml";
 
     public int Create(Customer c)
     {
