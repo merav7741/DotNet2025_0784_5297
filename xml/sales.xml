@@ -1,3 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfSale>
+<ArrayOfSale xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Sale>
+    <Id>55</Id>
+    <ProductId>1037</ProductId>
+    <QuantityForSale>1</QuantityForSale>
+    <SalePrice>150</SalePrice>
+    <IsSaleToAllCustomer>true</IsSaleToAllCustomer>
+    <StartSale>2026-04-27T15:37:56.7321976+03:00</StartSale>
+    <EndSale>2026-05-04T15:37:56.7363146+03:00</EndSale>
+  </Sale>
+  <Sale>
+    <Id>56</Id>
+    <ProductId>1038</ProductId>
+    <QuantityForSale>2</QuantityForSale>
+    <SalePrice>50</SalePrice>
+    <IsSaleToAllCustomer>true</IsSaleToAllCustomer>
+    <StartSale>2026-04-27T15:37:56.8093864+03:00</StartSale>
+    <EndSale>2026-05-07T15:37:56.8093942+03:00</EndSale>
+  </Sale>
+  <Sale>
+    <Id>57</Id>
+    <ProductId>1039</ProductId>
+    <QuantityForSale>4</QuantityForSale>
+    <SalePrice>60</SalePrice>
+    <IsSaleToAllCustomer>true</IsSaleToAllCustomer>
+    <StartSale>2026-04-27T15:37:56.8865216+03:00</StartSale>
+    <EndSale>2026-05-11T15:37:56.8865379+03:00</EndSale>
+  </Sale>
+  <Sale>
+    <Id>58</Id>
+    <ProductId>1040</ProductId>
+    <QuantityForSale>3</QuantityForSale>
+    <SalePrice>70</SalePrice>
+    <IsSaleToAllCustomer>true</IsSaleToAllCustomer>
+    <StartSale>2026-04-27T15:37:56.9400652+03:00</StartSale>
+    <EndSale>2026-05-07T15:37:56.940079+03:00</EndSale>
+  </Sale>
+  <Sale>
+    <Id>59</Id>
+    <ProductId>1041</ProductId>
+    <QuantityForSale>2</QuantityForSale>
+    <SalePrice>120</SalePrice>
+    <IsSaleToAllCustomer>true</IsSaleToAllCustomer>
+    <StartSale>2026-04-27T15:37:56.9912069+03:00</StartSale>
+    <EndSale>2026-05-07T15:37:56.9912166+03:00</EndSale>
+  </Sale>
 </ArrayOfSale>

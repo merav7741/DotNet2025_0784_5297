@@ -1,79 +1,104 @@
-using System.Xml.Linq;
 using DalApi;
 using DO;
+using System.Xml.Serialization;
 
 namespace Dal;
 
 internal class ProductImplementation : IProduct
 {
-    private const string PRODUCTS_FILE_PATH = "../xml/products.xml";
+    private const string PATH = @"../xml/products.xml";
+    private readonly XmlSerializer serializer = new(typeof(List<Product>));
+    private List<Product>? products;
 
-    public int Create(Product item)
+
+    private List<Product> LoadList()
     {
-        XElement productList = XElement.Load(PRODUCTS_FILE_PATH);
-        int id = Config.ProductNum;
-        Product newItem = item with { Id = id };
-        productList.Add(new XElement("Product",
-            new XElement("Id", newItem.Id),
-            new XElement("Name", newItem.Name),
-            new XElement("Category", newItem.Category),
-            new XElement("Price", newItem.Price),
-            new XElement("CountStock", newItem.CountStock)));
-        productList.Save(PRODUCTS_FILE_PATH);
-        return id;
+        if (!File.Exists(PATH))
+            return new List<Product>();
+
+        using StreamReader sr = new StreamReader(PATH);
+        return serializer.Deserialize(sr) as List<Product> ?? new List<Product>();
     }
 
-    public void Delete(int id)
+    private void SaveList(List<Product> list)
     {
-        XElement productList = XElement.Load(PRODUCTS_FILE_PATH);
-        XElement? product = productList.Elements("Product").FirstOrDefault(p => (int?)p.Element("Id") == id);
-        if (product == null)
-            throw new DalNotExistException($"There is no product with the id: {id}");
-        product.Remove();
-        productList.Save(PRODUCTS_FILE_PATH);
+        using StreamWriter sw = new StreamWriter(PATH);
+        serializer.Serialize(sw, list);
+    }
+
+    // =========================
+    // ?? יצירה
+    // =========================
+    public int Create(Product item)
+    {
+        products = LoadList();
+
+        int newId = Config.ProductNum;
+        Product newItem = item with { Id = newId };
+
+        if (products.Any(p => p.Id == newItem.Id))
+            throw new DalExsistException("Product already exists");
+
+        products.Add(newItem);
+        SaveList(products);
+
+        return newItem.Id;
     }
 
     public Product? Read(int id)
     {
-        XElement productList = XElement.Load(PRODUCTS_FILE_PATH);
-        XElement? product = productList.Elements("Product").FirstOrDefault(p => (int?)p.Element("Id") == id);
+        products = LoadList();
+
+        Product product = products.FirstOrDefault(p => p.Id == id);
+
         if (product == null)
-            throw new DalNotExistException($"There is no product with the id: {id}");
-        return ParseProduct(product);
+            throw new DalNotExistException("Product not exists");
+
+        return product;
     }
+
 
     public Product? Read(Func<Product, bool> filter)
     {
-        return ReadAll(filter).FirstOrDefault();
+        products = LoadList();
+        return products.FirstOrDefault(p => filter(p));
     }
 
     public List<Product> ReadAll(Func<Product, bool>? filter = null)
     {
-        XElement productList = XElement.Load(PRODUCTS_FILE_PATH);
-        var products = productList.Elements("Product").Select(ParseProduct).ToList();
-        return filter == null ? products : products.Where(filter).ToList();
+        products = LoadList();
+
+        return filter == null
+            ? new List<Product>(products)
+            : products.Where(filter).ToList();
     }
 
     public void Update(Product item)
     {
-        XElement productList = XElement.Load(PRODUCTS_FILE_PATH);
-        XElement? product = productList.Elements("Product").FirstOrDefault(p => (int?)p.Element("Id") == item.Id);
-        if (product == null)
-            throw new DalNotExistException($"There is no product with the id: {item.Id}");
-        product.SetElementValue("Name", item.Name);
-        product.SetElementValue("Category", item.Category);
-        product.SetElementValue("Price", item.Price);
-        product.SetElementValue("CountStock", item.CountStock);
-        productList.Save(PRODUCTS_FILE_PATH);
+        products = LoadList();
+
+        Product? existing = products.FirstOrDefault(p => p.Id == item.Id);
+
+        if (existing == null)
+            throw new DalNotExistException("Product not exists");
+
+        products.Remove(existing);
+        products.Add(item);
+
+        SaveList(products);
     }
 
-    private static Product ParseProduct(XElement p)
+
+    public void Delete(int id)
     {
-        return new Product(
-            (int?)p.Element("Id") ?? 0,
-            (string?)p.Element("Name") ?? string.Empty,
-            Enum.TryParse<Categories>((string?)p.Element("Category"), out var category) ? category : Categories.Necklace,
-            (double?)p.Element("Price") ?? 0,
-            (int?)p.Element("CountStock") ?? 0);
+        products = LoadList();
+
+        Product? product = products.FirstOrDefault(p => p.Id == id);
+
+        if (product == null)
+            throw new DalNotExistException("Product not exists");
+
+        products.Remove(product);
+        SaveList(products);
     }
 }

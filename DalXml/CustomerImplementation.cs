@@ -56,6 +56,9 @@ internal class CustomerImplementation : ICustomer
 
     private static List<Customer> Load()
     {
+        if (!File.Exists(CUSTOMERS_FILE_PATH))
+            return new List<Customer>();
+
         XmlSerializer serializer = new(typeof(List<Customer>));
         using StreamReader sr = new(CUSTOMERS_FILE_PATH);
         return serializer.Deserialize(sr) as List<Customer> ?? new List<Customer>();

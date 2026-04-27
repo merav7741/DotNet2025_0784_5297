@@ -25,7 +25,9 @@ namespace DalTest
             try
             {
                 int choice;
-                Initialization.Initialize();
+                Console.WriteLine("Do you want to initialize data? y/n");
+                if (Console.ReadLine() == "y")
+                    Initialization.Initialize();
                 while ((choice = PrintMainMenu()) != 0)
                 {
                     switch (choice)
@@ -373,7 +375,7 @@ namespace DalTest
             address = Console.ReadLine();
             Console.WriteLine("Enter phone of the customer");
             phone = Console.ReadLine();
-            return new Customer(id, name, address, phone);
+            return new Customer(0, name, address, phone);
         }
 
     }

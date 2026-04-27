@@ -57,6 +57,9 @@ internal class SaleImplementation : ISale
 
     private static List<Sale> Load()
     {
+        if (!File.Exists(SALES_FILE_PATH))
+            return new List<Sale>();
+
         XmlSerializer serializer = new(typeof(List<Sale>));
         using StreamReader sr = new(SALES_FILE_PATH);
         return serializer.Deserialize(sr) as List<Sale> ?? new List<Sale>();

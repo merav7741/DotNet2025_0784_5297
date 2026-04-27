@@ -1,3 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfProduct>
+<ArrayOfProduct xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Product>
+    <Id>1032</Id>
+    <Name>Heart necklace</Name>
+    <Category>Necklace</Category>
+    <Price>120</Price>
+    <CountStock>20</CountStock>
+  </Product>
+  <Product>
+    <Id>1033</Id>
+    <Name>Heart Bracelet</Name>
+    <Category>Bracelet</Category>
+    <Price>80</Price>
+    <CountStock>10</CountStock>
+  </Product>
+  <Product>
+    <Id>1034</Id>
+    <Name>Hoop earring</Name>
+    <Category>Earring</Category>
+    <Price>90</Price>
+    <CountStock>34</CountStock>
+  </Product>
+  <Product>
+    <Id>1035</Id>
+    <Name>Gold watch</Name>
+    <Category>Watch</Category>
+    <Price>350</Price>
+    <CountStock>3</CountStock>
+  </Product>
+  <Product>
+    <Id>1036</Id>
+    <Name>Pandora ring</Name>
+    <Category>Ring</Category>
+    <Price>110</Price>
+    <CountStock>12</CountStock>
+  </Product>
+  <Product>
+    <Id>1037</Id>
+    <Name>Heart necklace</Name>
+    <Category>Necklace</Category>
+    <Price>120</Price>
+    <CountStock>20</CountStock>
+  </Product>
+  <Product>
+    <Id>1038</Id>
+    <Name>Heart Bracelet</Name>
+    <Category>Bracelet</Category>
+    <Price>80</Price>
+    <CountStock>10</CountStock>
+  </Product>
+  <Product>
+    <Id>1039</Id>
+    <Name>Hoop earring</Name>
+    <Category>Earring</Category>
+    <Price>90</Price>
+    <CountStock>34</CountStock>
+  </Product>
+  <Product>
+    <Id>1040</Id>
+    <Name>Gold watch</Name>
+    <Category>Watch</Category>
+    <Price>350</Price>
+    <CountStock>3</CountStock>
+  </Product>
+  <Product>
+    <Id>1041</Id>
+    <Name>Pandora ring</Name>
+    <Category>Ring</Category>
+    <Price>110</Price>
+    <CountStock>12</CountStock>
+  </Product>
 </ArrayOfProduct>

@@ -50,7 +50,7 @@ public static class Initialization
     }
 
 
-public static void Initialize()    {
+    public static void Initialize()    {
 
         CreateProducts();
         CreateCustomers();
