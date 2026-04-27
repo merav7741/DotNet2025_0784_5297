@@ -49,6 +49,7 @@
             dgvCustomers.Size = new Size(568, 254);
             dgvCustomers.TabIndex = 0;
             dgvCustomers.CellContentClick += dgvCustomers_CellContentClick;
+            dgvCustomers.MouseDoubleClick += dgvCustomers_MouseDoubleClick;
             // 
             // label1
             // 
@@ -97,6 +98,7 @@
             btnAddCustomer.TabIndex = 3;
             btnAddCustomer.Text = "הוספת לקוח חדש";
             btnAddCustomer.UseVisualStyleBackColor = true;
+            btnAddCustomer.Click += btnAddCustomer_Click;
             // 
             // frmCustomerList
             // 

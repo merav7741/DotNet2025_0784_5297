@@ -18,6 +18,7 @@ namespace UI
             InitializeComponent();
             bl = BlApi.Factory.Get();
             RefreshCustomerGrid();
+
         }
         private void RefreshCustomerGrid()
         {
@@ -46,12 +47,67 @@ namespace UI
 
         private void btnUpdateCustomer_Click(object sender, EventArgs e)
         {
+            if (dgvCustomers.CurrentRow != null)
+            {
+                var customer = (BO.Customer)dgvCustomers.CurrentRow.DataBoundItem;
 
+                new frmCustomer(customer.Id).ShowDialog();
+
+                RefreshCustomerGrid();
+            }
+            else
+            {
+                MessageBox.Show("אנא בחרי לקוח מהרשימה לעדכון.");
+            }
         }
 
         private void btnDeleteCustomer_Click(object sender, EventArgs e)
         {
+            if (dgvCustomers.CurrentRow != null)
+            {
+                var customer = (BO.Customer)dgvCustomers.CurrentRow.DataBoundItem;
+                var result = MessageBox.Show($"האם את בטוחה שברצונך למחוק את {customer.Name}?",
+                                           "אישור מחיקה",
+                                           MessageBoxButtons.YesNo,
+                                           MessageBoxIcon.Warning);
 
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        bl.Customer.Delete(customer.Id);
+                        RefreshCustomerGrid();
+
+                        MessageBox.Show("הלקוח נמחק בהצלחה!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "שגיאה במחיקה");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("אנא בחרי לקוח מהרשימה תחילה.");
+            }
+        }
+
+        private void btnAddCustomer_Click(object sender, EventArgs e)
+        {
+            new frmCustomer().ShowDialog();
+            RefreshCustomerGrid();
+        }
+
+        private void dgvCustomers_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (dgvCustomers.CurrentRow != null)
+            {
+                var customer = (BO.Customer)dgvCustomers.CurrentRow.DataBoundItem;
+
+                new frmCustomer(customer.Id).ShowDialog();
+
+                RefreshCustomerGrid();
+            }
         }
     }
 }

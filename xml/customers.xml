@@ -2,8 +2,8 @@
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
     <Id>1</Id>
-    <Name>Yosef Chaim Levi</Name>
-    <Address>Bnei Brack</Address>
+    <Name>יוסף חיים לוי</Name>
+    <Address>בני ברק</Address>
     <Phone>0583256857</Phone>
   </Customer>
   <Customer>

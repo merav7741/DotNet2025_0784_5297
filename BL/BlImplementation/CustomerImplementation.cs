@@ -17,7 +17,7 @@ internal class CustomerImplementation : ICustomer
 
         catch (DO.DalExsistException innerExeption)
         {
-            throw new BO.BlIdExistsException("The customer is Exist!", innerExeption);
+            throw new BO.BlIdExistsException("The customer id is Exist!", innerExeption);
         }
     }
   
