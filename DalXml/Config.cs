@@ -1,62 +1,47 @@
-using System;
-using System.IO;
 using System.Xml.Linq;
 
 namespace Dal;
 
 internal static class Config
 {
-    static readonly string path = Path.Combine(AppContext.BaseDirectory, "xml", "data-config.xml");
+    static readonly string PATH =
+    Path.Combine(AppContext.BaseDirectory, "xml", "config.xml");
 
-    const string PRODUCT_TAG = "ProductNum";
-    const string SALE_TAG = "SaleNum";
+    const string PRODUCT = "ProductNum";
+    const string SALE = "SaleNum";
 
-    static XElement dataConfigXml = Initialize();
+    static XElement xml = Load();
 
-    private static XElement Initialize()
+    private static XElement Load()
     {
-        var dir = Path.GetDirectoryName(path);
+        var dir = Path.GetDirectoryName(PATH);
         if (!Directory.Exists(dir))
-            Directory.CreateDirectory(dir);
-        if (!File.Exists(path))
+            Directory.CreateDirectory(dir!);
+
+        if (!File.Exists(PATH))
         {
-            var defaultXml = new XElement("config",
-                new XElement(PRODUCT_TAG, "1000"),
-                new XElement(SALE_TAG, "1000")   
-            );
-            defaultXml.Save(path);
-            return defaultXml;
+            var x = new XElement("config",
+                new XElement(PRODUCT, "1000"),
+                new XElement(SALE, "1000"));
+
+            x.Save(PATH);
+            return x;
         }
 
-        try
-        {
-            return XElement.Load(path);
-        }
-        catch
-        {
-            var fallback = new XElement("config",
-                new XElement(PRODUCT_TAG, "1000"),
-                new XElement(SALE_TAG, "1000")
-            );
-            fallback.Save(path);
-            return fallback;
-        }
+        return XElement.Load(PATH);
     }
 
-    private static int _nextProductNum = int.Parse(dataConfigXml.Element(PRODUCT_TAG).Value);
-    private static int _nextSaleNum = int.Parse(dataConfigXml.Element(SALE_TAG).Value);
+    private static int nextProduct = int.Parse(xml.Element(PRODUCT)!.Value);
+    private static int nextSale = int.Parse(xml.Element(SALE)!.Value);
 
     public static int NextProductNum
     {
         get
         {
-            int current = _nextProductNum; 
-            _nextProductNum++;            
-
-            dataConfigXml.Element(PRODUCT_TAG).SetValue(_nextProductNum);
-            dataConfigXml.Save(path);
-
-            return current;
+            int cur = nextProduct++;
+            xml.Element(PRODUCT)!.Value = nextProduct.ToString();
+            xml.Save(PATH);
+            return cur;
         }
     }
 
@@ -64,13 +49,10 @@ internal static class Config
     {
         get
         {
-            int current = _nextSaleNum;
-            _nextSaleNum++;
-
-            dataConfigXml.Element(SALE_TAG).SetValue(_nextSaleNum);
-            dataConfigXml.Save(path);
-
-            return current;
+            int cur = nextSale++;
+            xml.Element(SALE)!.Value = nextSale.ToString();
+            xml.Save(PATH);
+            return cur;
         }
     }
 }

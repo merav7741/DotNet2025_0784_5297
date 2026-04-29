@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Customer>
+    <Id>1</Id>
+    <Name>יוסף חיים לוי</Name>
+    <Address>בני ברק</Address>
+    <Phone>0583256857</Phone>
+  </Customer>
+  <Customer>
+    <Id>2</Id>
+    <Name>יעל גרשון</Name>
+    <Address>מודיעין</Address>
+    <Phone>0556784421</Phone>
+  </Customer>
+  <Customer>
+    <Id>3</Id>
+    <Name>Rachel Kuk</Name>
+    <Address>Address A</Address>
+    <Phone>0533104085</Phone>
+  </Customer>
+  <Customer>
+    <Id>4</Id>
+    <Name>Noa Tut</Name>
+    <Address>Jerushalem</Address>
+    <Phone>0533127859</Phone>
+  </Customer>
+  <Customer>
+    <Id>5</Id>
+    <Name>Michal Vi</Name>
+    <Address>Haifa</Address>
+    <Phone>0534128596</Phone>
+  </Customer>
+  <Customer>
+    <Id>6</Id>
+    <Name>Lea Booksan</Name>
+    <Address>BEitar</Address>
+    <Phone>0556784586</Phone>
+  </Customer>
+  <Customer>
+    <Id>1234</Id>
+    <Name> תהילה יאיר</Name>
+    <Address>מודיעין עילית</Address>
+    <Phone>089741723</Phone>
+  </Customer>
+</ArrayOfCustomer>

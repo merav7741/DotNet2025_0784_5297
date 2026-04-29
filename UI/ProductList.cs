@@ -17,7 +17,21 @@ namespace UI
         public ProductList()
         {
             InitializeComponent();
-            CategorySelector.DataSource = Enum.GetValues(typeof(BO.Categories));
+
+            var categories = Enum.GetValues(typeof(BO.Categories))
+                                 .Cast<BO.Categories>()
+                                 .ToList();
+
+            categories.Insert(0, (BO.Categories)(-1));
+
+            CategorySelector.DataSource = categories;
+
+            CategorySelector.Format += (s, e) =>
+            {
+                if ((BO.Categories)e.Value == (BO.Categories)(-1))
+                    e.Value = "הכל";
+            };
+
             RefreshGrid();
         }
         private void RefreshGrid()
@@ -29,7 +43,15 @@ namespace UI
         {
             if (CategorySelector.SelectedItem is BO.Categories category)
             {
-                ProductsGrid.DataSource = bl.Product.ReadAll(p => p.Category == category).ToList();
+                if ((int)category == -1)
+                {
+                    RefreshGrid();
+                }
+                else
+                {
+                    ProductsGrid.DataSource =
+                        bl.Product.ReadAll(p => p.Category == category).ToList();
+                }
             }
         }
 
@@ -37,6 +59,43 @@ namespace UI
         {
             new frmProduct().ShowDialog();
             RefreshGrid();
+        }
+
+        private void ProductsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+
+        private void btnDeleteProduct_Click(object sender, EventArgs e)
+        {
+            if (ProductsGrid.CurrentRow != null)
+            {
+                var product = (BO.Product)ProductsGrid.CurrentRow.DataBoundItem;
+
+                var result = MessageBox.Show(
+                    $"האם למחוק את {product.Name}?",
+                    "אישור",
+                    MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.Yes)
+                {
+                    bl.Product.Delete(product.Id);
+                    RefreshGrid();
+                }
+            }
+        }
+
+        private void ProductsGrid_MouseDoubleClick_1(object sender, MouseEventArgs e)
+        {
+            if (ProductsGrid.CurrentRow != null)
+            {
+                var product = (BO.Product)ProductsGrid.CurrentRow.DataBoundItem;
+
+                new frmProduct(product.Id).ShowDialog();
+
+                RefreshGrid();
+            }
         }
     }
 }

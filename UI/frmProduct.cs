@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -35,16 +36,30 @@ namespace UI
         {
             try
             {
-                var p = new BO.Product
+                if (!double.TryParse(txtPrice.Text, out double price))
                 {
+                    MessageBox.Show("מחיר לא תקין");
+                    return;
+                }
 
-                    Id =  0,
+                if (!int.TryParse(txtStock.Text, out int stock))
+                {
+                    MessageBox.Show("כמות לא תקינה");
+                    return;
+                }
+                var p = new BO.Product
+                { 
+                    Id = productId ?? 0,
                     Name = txtName.Text,
-                    Price = double.Parse(txtPrice.Text),
-                    CountStock = int.Parse(txtStock.Text),
+                     Price = price,
+                    CountStock = stock,
                     Category = (BO.Categories)cmbCategory.SelectedItem
                 };
-
+                if (string.IsNullOrWhiteSpace(txtName.Text))
+                {
+                    MessageBox.Show("שם מוצר חובה");
+                    return;
+                }
                 if (productId == null)
                 {
                     bl.Product.Create(p); 
@@ -55,6 +70,7 @@ namespace UI
                     bl.Product.Update(p); 
                     MessageBox.Show("המוצר עודכן בהצלחה!");
                 }
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)

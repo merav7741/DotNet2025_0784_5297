@@ -6,92 +6,91 @@ namespace Dal;
 
 internal class SaleImplementation : ISale
 {
-    private static readonly string SALES_FILE_PATH = Path.Combine(AppContext.BaseDirectory, "xml", "sales.xml");
+    private static readonly string PATH =
+        Path.Combine(AppContext.BaseDirectory, "xml", "sales.xml");
 
-    public int Create(Sale s)
-    {
-        int myId = Config.NextSaleNum;
-        s = s with { Id = myId };
-
-        List<Sale> salesList = Load();
-
-        if (salesList.Any(x => x.Id == s.Id))
-            throw new DalExsistException($"Sale with id: {s.Id} already exists");
-
-        salesList.Add(s);
-        Save(salesList);
-        return s.Id;
-    }
-
-    public void Delete(int id)
-    {
-        List<Sale> salesList = Load();
-        Sale? sale = salesList.FirstOrDefault(x => x.Id == id);
-        if (sale == null)
-            throw new DalNotExistException($"Sale with id: {id} was not found");
-
-        salesList.Remove(sale);
-        Save(salesList);
-    }
-
-    public Sale? Read(int id)
-    {
-        List<Sale> salesList = Load();
-        return salesList.FirstOrDefault(x => x.Id == id)
-               ?? throw new DalNotExistException($"Sale with id: {id} was not found");
-    }
-
-    public Sale? Read(Func<Sale, bool> filter)
-    {
-        return Load().FirstOrDefault(filter);
-    }
-
-    public List<Sale> ReadAll(Func<Sale, bool>? filter = null)
-    {
-        List<Sale> salesList = Load();
-        return filter == null ? salesList : salesList.Where(filter).ToList();
-    }
-
-    public void Update(Sale sale)
-    {
-        List<Sale> salesList = Load();
-        int index = salesList.FindIndex(s => s.Id == sale.Id);
-        if (index < 0)
-            throw new DalNotExistException($"Sale with id: {sale.Id} was not found");
-
-        salesList[index] = sale;
-        Save(salesList);
-    }
-
-    // פונקציית טעינה בטוחה באמצעות XmlSerializer
     private static List<Sale> Load()
     {
-        // יצירת התיקייה במידה והיא לא קיימת ב-Debug
-        string? dir = Path.GetDirectoryName(SALES_FILE_PATH);
-        if (dir != null && !Directory.Exists(dir))
-            Directory.CreateDirectory(dir);
+        EnsureDir();
 
-        if (!File.Exists(SALES_FILE_PATH))
+        if (!File.Exists(PATH))
             return new List<Sale>();
 
         try
         {
             XmlSerializer serializer = new(typeof(List<Sale>));
-            using StreamReader sr = new(SALES_FILE_PATH);
+            using StreamReader sr = new(PATH);
             return serializer.Deserialize(sr) as List<Sale> ?? new List<Sale>();
         }
         catch
         {
-            // אם הקובץ פגום או ריק, נחזיר רשימה חדשה
             return new List<Sale>();
         }
     }
 
-    // פונקציית שמירה בטוחה
-    private static void Save(List<Sale> salesList)
+    private static void Save(List<Sale> list)
     {
+        EnsureDir();
+
         XmlSerializer serializer = new(typeof(List<Sale>));
-        using StreamWriter sw = new(SALES_FILE_PATH);
-        serializer.Serialize(sw, salesList);
+        using StreamWriter sw = new(PATH);
+        serializer.Serialize(sw, list);
+    }
+
+    public int Create(Sale item)
+    {
+        var list = Load();
+
+        int id = Config.NextSaleNum;
+        Sale newItem = item with { Id = id };
+
+        list.Add(newItem);
+        Save(list);
+
+        return id;
+    }
+
+    public void Delete(int id)
+    {
+        var list = Load();
+
+        var item = list.FirstOrDefault(x => x.Id == id)
+            ?? throw new DalNotExistException("Sale not found");
+
+        list.Remove(item);
+        Save(list);
+    }
+
+    public Sale? Read(int id)
+        => Load().FirstOrDefault(x => x.Id == id)
+           ?? throw new DalNotExistException("Sale not found");
+
+    public Sale? Read(Func<Sale, bool> filter)
+        => Load().FirstOrDefault(filter);
+
+    public List<Sale?> ReadAll(Func<Sale, bool>? filter = null)
+    {
+        var list = Load();
+        return filter == null ? list.Cast<Sale?>().ToList()
+                              : list.Where(filter).Cast<Sale?>().ToList();
+    }
+
+    public void Update(Sale item)
+    {
+        var list = Load();
+
+        int index = list.FindIndex(x => x.Id == item.Id);
+        if (index == -1)
+            throw new DalNotExistException("Sale not found");
+
+        list[index] = item;
+        Save(list);
+    }
+
+    private static void EnsureDir()
+    {
+        var dir = Path.GetDirectoryName(PATH);
+        if (!Directory.Exists(dir))
+            Directory.CreateDirectory(dir!);
     }
 }

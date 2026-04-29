@@ -8,16 +8,18 @@ static class DalConfig
 
     static DalConfig()
     {
+        string configPath = Path.Combine(AppContext.BaseDirectory, "xml", "dal-config.xml");
 
-        XElement dalConfig = XElement.Load(@"..\xml\dal-config.xml") ??
-        throw new DalConfigException("dal-config.xml file is not found");
+        XElement dalConfig = XElement.Load(configPath);
 
-        s_dalName = dalConfig.Element("dal")?.Value ?? throw new DalConfigException("<dal> element is missing");
+        s_dalName = dalConfig.Element("dal")?.Value
+            ?? throw new DalConfigException("<dal> element is missing");
 
-        var packages = dalConfig.Element("dal-packages")?.Elements() ??
+        var dalPackagesElement = dalConfig.Element("dal-packages")
+            ?? throw new DalConfigException("<dal-packages> element is missing");
 
-       throw new DalConfigException("<dal-packages> element is missing");
-        s_dalPackages = packages.ToDictionary(p => "" + p.Name, p => p.Value);
+        s_dalPackages = dalPackagesElement.Elements()
+            .ToDictionary(p => p.Name.LocalName, p => p.Value);
     }
 }
 
