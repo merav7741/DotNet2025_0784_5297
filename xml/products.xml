@@ -70,4 +70,11 @@
     <Price>110</Price>
     <CountStock>12</CountStock>
   </Product>
+  <Product>
+    <Id>1042</Id>
+    <Name>צמיד כסף לב </Name>
+    <Category>Necklace</Category>
+    <Price>12</Price>
+    <CountStock>4</CountStock>
+  </Product>
 </ArrayOfProduct>

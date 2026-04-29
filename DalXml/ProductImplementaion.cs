@@ -7,7 +7,8 @@ namespace Dal;
 internal class ProductImplementation : IProduct
 {
     // שימוש בניתוב בטוח ויחסי שמתאים לכל מחשב
-    private static readonly string PATH = Path.Combine(AppContext.BaseDirectory, "xml", "products.xml");
+
+   private static readonly string PATH = Path.Combine(AppContext.BaseDirectory, "..", "xml", "products.xml");
 
     private readonly XmlSerializer serializer = new(typeof(List<Product>));
     private List<Product>? products;

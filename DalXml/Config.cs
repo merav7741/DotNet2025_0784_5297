@@ -6,7 +6,8 @@ namespace Dal;
 
 internal static class Config
 {
-    static readonly string path = Path.Combine(AppContext.BaseDirectory, "xml", "data-config.xml");
+    
+    static readonly string path = Path.Combine(AppContext.BaseDirectory, "..", "xml", "data-config.xml");
 
     const string PRODUCT_TAG = "ProductNum";
     const string SALE_TAG = "SaleNum";

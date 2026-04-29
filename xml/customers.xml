@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <Id>1</Id>
-    <Name>יוסף חיים לוי</Name>
-    <Address>בני ברק</Address>
-    <Phone>0583256857</Phone>
-  </Customer>
-  <Customer>
     <Id>2</Id>
     <Name>יעל גרשון</Name>
     <Address>מודיעין</Address>
