@@ -4,11 +4,12 @@ namespace Dal;
 
 internal sealed class DalXml : IDal
 {
-    private static readonly DalXml _instance = new();
-    public static DalXml Instance => _instance;
+    private static readonly DalXml instance = new();
+    public static DalXml Instance => instance;
+
     private DalXml() { }
 
     public ICustomer Customer => new CustomerImplementation();
-    public ISale Sale => new SaleImplementation();
     public IProduct Product => new ProductImplementation();
+    public ISale Sale => new SaleImplementation();
 }

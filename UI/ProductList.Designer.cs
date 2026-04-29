@@ -31,6 +31,7 @@
             CategorySelector = new ComboBox();
             ProductsGrid = new DataGridView();
             BtnAddProduct = new Button();
+            btnDeleteProduct = new Button();
             ((System.ComponentModel.ISupportInitialize)ProductsGrid).BeginInit();
             SuspendLayout();
             // 
@@ -51,6 +52,8 @@
             ProductsGrid.RowHeadersWidth = 51;
             ProductsGrid.Size = new Size(378, 261);
             ProductsGrid.TabIndex = 1;
+            ProductsGrid.CellContentClick += ProductsGrid_CellContentClick;
+            ProductsGrid.MouseDoubleClick += ProductsGrid_MouseDoubleClick_1;
             // 
             // BtnAddProduct
             // 
@@ -62,11 +65,22 @@
             BtnAddProduct.UseVisualStyleBackColor = true;
             BtnAddProduct.Click += BtnAddProduct_Click;
             // 
+            // btnDeleteProduct
+            // 
+            btnDeleteProduct.Location = new Point(229, 263);
+            btnDeleteProduct.Name = "btnDeleteProduct";
+            btnDeleteProduct.Size = new Size(127, 29);
+            btnDeleteProduct.TabIndex = 3;
+            btnDeleteProduct.Text = "מחיקת מוצר";
+            btnDeleteProduct.UseVisualStyleBackColor = true;
+            btnDeleteProduct.Click += btnDeleteProduct_Click;
+            // 
             // ProductList
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnDeleteProduct);
             Controls.Add(BtnAddProduct);
             Controls.Add(ProductsGrid);
             Controls.Add(CategorySelector);
@@ -81,5 +95,6 @@
         private ComboBox CategorySelector;
         private DataGridView ProductsGrid;
         private Button BtnAddProduct;
+        private Button btnDeleteProduct;
     }
 }

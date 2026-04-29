@@ -14,6 +14,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="xml\customers.xml" />
+    <None Remove="xml\dal-config.xml" />
+    <None Remove="xml\data-config.xml" />
+    <None Remove="xml\products.xml" />
+    <None Remove="xml\sales.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="xml\customers.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xml\dal-config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xml\data-config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xml\products.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xml\sales.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
     <ProjectReference Include="..\DalTest\DalTest.csproj" />
   </ItemGroup>
