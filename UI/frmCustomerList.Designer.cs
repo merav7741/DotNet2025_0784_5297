@@ -34,6 +34,7 @@
             btnDeleteCustomer = new Button();
             btnUpdateCustomer = new Button();
             btnAddCustomer = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
             SuspendLayout();
             // 
@@ -54,7 +55,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(463, 132);
+            label1.Location = new Point(463, 135);
             label1.Name = "label1";
             label1.Size = new Size(130, 20);
             label1.TabIndex = 1;
@@ -100,11 +101,23 @@
             btnAddCustomer.UseVisualStyleBackColor = true;
             btnAddCustomer.Click += btnAddCustomer_Click;
             // 
+            // button1
+            // 
+            button1.BackColor = SystemColors.ActiveCaption;
+            button1.Location = new Point(65, 14);
+            button1.Name = "button1";
+            button1.Size = new Size(94, 29);
+            button1.TabIndex = 4;
+            button1.Text = "חזרה ";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
             // frmCustomerList
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button1);
             Controls.Add(btnAddCustomer);
             Controls.Add(btnUpdateCustomer);
             Controls.Add(btnDeleteCustomer);
@@ -127,5 +140,6 @@
         private Button btnDeleteCustomer;
         private Button btnUpdateCustomer;
         private Button btnAddCustomer;
+        private Button button1;
     }
 }

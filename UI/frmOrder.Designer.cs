@@ -32,6 +32,7 @@
             textBox1 = new TextBox();
             btnDeleteOrder = new Button();
             btnUpdateOrder = new Button();
+            button2 = new Button();
             SuspendLayout();
             // 
             // btnAddOrder
@@ -71,11 +72,23 @@
             btnUpdateOrder.UseVisualStyleBackColor = true;
             btnUpdateOrder.Click += btnUpdateOrder_Click;
             // 
+            // button2
+            // 
+            button2.BackColor = SystemColors.ActiveCaption;
+            button2.Location = new Point(69, 53);
+            button2.Name = "button2";
+            button2.Size = new Size(94, 29);
+            button2.TabIndex = 5;
+            button2.Text = "חזרה ";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
+            // 
             // frmOrder
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button2);
             Controls.Add(textBox1);
             Controls.Add(btnUpdateOrder);
             Controls.Add(btnDeleteOrder);
@@ -92,5 +105,6 @@
         private TextBox textBox1;
         private Button btnDeleteOrder;
         private Button btnUpdateOrder;
+        private Button button2;
     }
 }

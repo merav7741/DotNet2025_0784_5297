@@ -32,6 +32,7 @@
             ProductsGrid = new DataGridView();
             BtnAddProduct = new Button();
             btnDeleteProduct = new Button();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)ProductsGrid).BeginInit();
             SuspendLayout();
             // 
@@ -75,11 +76,23 @@
             btnDeleteProduct.UseVisualStyleBackColor = true;
             btnDeleteProduct.Click += btnDeleteProduct_Click;
             // 
+            // button2
+            // 
+            button2.BackColor = SystemColors.ActiveCaption;
+            button2.Location = new Point(35, 33);
+            button2.Name = "button2";
+            button2.Size = new Size(94, 29);
+            button2.TabIndex = 6;
+            button2.Text = "חזרה ";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
+            // 
             // ProductList
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button2);
             Controls.Add(btnDeleteProduct);
             Controls.Add(BtnAddProduct);
             Controls.Add(ProductsGrid);
@@ -96,5 +109,6 @@
         private DataGridView ProductsGrid;
         private Button BtnAddProduct;
         private Button btnDeleteProduct;
+        private Button button2;
     }
 }
