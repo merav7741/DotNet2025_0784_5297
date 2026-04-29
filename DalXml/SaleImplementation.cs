@@ -6,8 +6,8 @@ namespace Dal;
 
 internal class SaleImplementation : ISale
 {
-
-    private static readonly string SALES_FILE_PATH = Path.Combine(AppContext.BaseDirectory, "..", "xml", "sales.xml");
+    private static readonly string PATH =
+        Path.Combine(AppContext.BaseDirectory, "..", "xml", "sales.xml");
 
     private static List<Sale> Load()
     {
