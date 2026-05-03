@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,11 +15,14 @@ namespace UI
     {
         private readonly IBl bl = Factory.Get();
         private int? productId = null;
+
         public frmProduct()
         {
             InitializeComponent();
             cmbCategory.DataSource = Enum.GetValues(typeof(BO.Categories));
+            btnSave.Text = "הוסף מוצר"; 
         }
+
         public frmProduct(int id) : this()
         {
             productId = id;
@@ -36,46 +38,54 @@ namespace UI
         {
             try
             {
-                if (!double.TryParse(txtPrice.Text, out double price))
+                // 1. בדיקת חובה: שם מוצר
+                if (string.IsNullOrWhiteSpace(txtName.Text))
                 {
-                    MessageBox.Show("מחיר לא תקין");
+                    MessageBox.Show("חובה להזין שם מוצר", "שגיאת קלט", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (!int.TryParse(txtStock.Text, out int stock))
+                // 2. בדיקת תקינות מחיר
+                if (!double.TryParse(txtPrice.Text, out double price) || price < 0)
                 {
-                    MessageBox.Show("כמות לא תקינה");
+                    MessageBox.Show("נא להזין מחיר תקין (מספר חיובי)", "שגיאת קלט", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+
+                // 3. בדיקת תקינות מלאי
+                if (!int.TryParse(txtStock.Text, out int stock) || stock < 0)
+                {
+                    MessageBox.Show("נא להזין כמות מלאי תקינה", "שגיאת קלט", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // יצירת אובייקט המוצר לעדכון או הוספה
                 var p = new BO.Product
-                { 
-                    Id = productId ?? 0,
+                {
+                    Id = productId ?? 0, // אם זה חדש - 0, אם זה עדכון - ה-ID הקיים
                     Name = txtName.Text,
-                     Price = price,
+                    Price = price,
                     CountStock = stock,
                     Category = (BO.Categories)cmbCategory.SelectedItem
                 };
-                if (string.IsNullOrWhiteSpace(txtName.Text))
-                {
-                    MessageBox.Show("שם מוצר חובה");
-                    return;
-                }
+
                 if (productId == null)
                 {
-                    bl.Product.Create(p); 
-                    MessageBox.Show("המוצר נוסף בהצלחה!");
+                    bl.Product.Create(p);
+                    MessageBox.Show("המוצר נוסף בהצלחה!", "הצלחה", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    bl.Product.Update(p); 
-                    MessageBox.Show("המוצר עודכן בהצלחה!");
+                    bl.Product.Update(p);
+                    MessageBox.Show("המוצר עודכן בהצלחה!", "הצלחה", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
+
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"שגיאה: {ex.Message}", "שגיאה במערכת", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

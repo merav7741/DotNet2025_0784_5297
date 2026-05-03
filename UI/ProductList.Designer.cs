@@ -33,6 +33,7 @@
             BtnAddProduct = new Button();
             btnDeleteProduct = new Button();
             button2 = new Button();
+            btnUpdateProduct = new Button();
             ((System.ComponentModel.ISupportInitialize)ProductsGrid).BeginInit();
             SuspendLayout();
             // 
@@ -58,7 +59,7 @@
             // 
             // BtnAddProduct
             // 
-            BtnAddProduct.Location = new Point(229, 214);
+            BtnAddProduct.Location = new Point(229, 228);
             BtnAddProduct.Name = "BtnAddProduct";
             BtnAddProduct.Size = new Size(136, 29);
             BtnAddProduct.TabIndex = 2;
@@ -68,12 +69,13 @@
             // 
             // btnDeleteProduct
             // 
+            btnDeleteProduct.BackColor = Color.Red;
             btnDeleteProduct.Location = new Point(229, 263);
             btnDeleteProduct.Name = "btnDeleteProduct";
-            btnDeleteProduct.Size = new Size(127, 29);
+            btnDeleteProduct.Size = new Size(136, 29);
             btnDeleteProduct.TabIndex = 3;
             btnDeleteProduct.Text = "מחיקת מוצר";
-            btnDeleteProduct.UseVisualStyleBackColor = true;
+            btnDeleteProduct.UseVisualStyleBackColor = false;
             btnDeleteProduct.Click += btnDeleteProduct_Click;
             // 
             // button2
@@ -87,11 +89,22 @@
             button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
+            // btnUpdateProduct
+            // 
+            btnUpdateProduct.Location = new Point(229, 183);
+            btnUpdateProduct.Name = "btnUpdateProduct";
+            btnUpdateProduct.Size = new Size(136, 29);
+            btnUpdateProduct.TabIndex = 7;
+            btnUpdateProduct.Text = "עדכון מוצר";
+            btnUpdateProduct.UseVisualStyleBackColor = true;
+            btnUpdateProduct.Click += btnUpdateProduct_Click;
+            // 
             // ProductList
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnUpdateProduct);
             Controls.Add(button2);
             Controls.Add(btnDeleteProduct);
             Controls.Add(BtnAddProduct);
@@ -110,5 +123,6 @@
         private Button BtnAddProduct;
         private Button btnDeleteProduct;
         private Button button2;
+        private Button btnUpdateProduct;
     }
 }

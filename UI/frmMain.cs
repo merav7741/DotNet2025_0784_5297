@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
 
 namespace UI
 {
@@ -32,20 +33,62 @@ namespace UI
         }
         private void btnProductsbtnProducts_Click(object sender, EventArgs e)
         {
-            ProductList frm = new ProductList();
-            frm.ShowDialog();
+            string secretCode = "1234";
+
+            string input = Interaction.InputBox("כניסה למנהל בלבד: נא להקיש קוד גישה", "אבטחת מערכת", "");
+
+            if (input == secretCode)
+            {
+                MessageBox.Show("הקוד אומת בהצלחה!", "אישור", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ProductList frm = new ProductList();
+                frm.ShowDialog();
+            }
+            else if (string.IsNullOrEmpty(input))
+            {
+                return;
+            }
+            else
+            {
+                MessageBox.Show("קוד שגוי. אין לך גישה למערכת.", "שגיאה", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnCustomers_Click(object sender, EventArgs e)
         {
-            frmCustomerList frm = new frmCustomerList();
-            frm.ShowDialog();
+            string secretCode = "1234";
+
+            string input = Interaction.InputBox("כניסה למנהל בלבד: נא להקיש קוד גישה", "אבטחת מערכת", "");
+
+            if (input == secretCode)
+            {
+                MessageBox.Show("הקוד אומת בהצלחה!", "אישור", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                frmCustomerList frm = new frmCustomerList();
+                frm.ShowDialog();
+            }
+            else if (string.IsNullOrEmpty(input)) { return; }
+            else
+            {
+                MessageBox.Show("קוד שגוי. אין לך גישה למערכת.", "שגיאה", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnSales_Click(object sender, EventArgs e)
         {
-            //frmSaleList frm = new frmSaleList();
-            //frm.ShowDialog();
+            string secretCode = "1234";
+
+            string input = Interaction.InputBox("כניסה למנהל בלבד: נא להקיש קוד גישה", "אבטחת מערכת", "");
+
+            if (input == secretCode)
+            {
+                MessageBox.Show("הקוד אומת בהצלחה!", "אישור", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //frmSaleList frm = new frmSaleList();
+                //frm.ShowDialog();
+            }
+            else if (string.IsNullOrEmpty(input)) { return; }
+            else
+            {
+                MessageBox.Show("קוד שגוי. אין לך גישה למערכת.", "שגיאה", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnNewOrder_Click(object sender, EventArgs e)

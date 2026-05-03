@@ -36,4 +36,10 @@
     <Address>מודיעין עילית</Address>
     <Phone>089741723</Phone>
   </Customer>
+  <Customer>
+    <Id>356262541</Id>
+    <Name>ישראל ישראלי</Name>
+    <Address>נעלה</Address>
+    <Phone>053311111</Phone>
+  </Customer>
 </ArrayOfCustomer>

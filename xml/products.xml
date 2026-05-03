@@ -2,10 +2,10 @@
 <ArrayOfProduct xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Product>
     <Id>1032</Id>
-    <Name>Heart necklace</Name>
+    <Name>צמיד לב</Name>
     <Category>Necklace</Category>
-    <Price>120</Price>
-    <CountStock>20</CountStock>
+    <Price>100</Price>
+    <CountStock>30</CountStock>
   </Product>
   <Product>
     <Id>1033</Id>
@@ -76,5 +76,12 @@
     <Category>Necklace</Category>
     <Price>12</Price>
     <CountStock>4</CountStock>
+  </Product>
+  <Product>
+    <Id>1043</Id>
+    <Name>צמיד</Name>
+    <Category>Necklace</Category>
+    <Price>4500</Price>
+    <CountStock>1</CountStock>
   </Product>
 </ArrayOfProduct>

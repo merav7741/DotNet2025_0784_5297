@@ -14,6 +14,7 @@ namespace UI
     public partial class ProductList : Form
     {
         private readonly IBl bl = Factory.Get();
+
         public ProductList()
         {
             InitializeComponent();
@@ -22,8 +23,8 @@ namespace UI
                                  .Cast<BO.Categories>()
                                  .ToList();
 
+            // הוספת אפשרות "הכל" לסינון
             categories.Insert(0, (BO.Categories)(-1));
-
             CategorySelector.DataSource = categories;
 
             CategorySelector.Format += (s, e) =>
@@ -34,8 +35,10 @@ namespace UI
 
             RefreshGrid();
         }
+
         private void RefreshGrid()
         {
+            // טעינה מחדש של כל המוצרים
             ProductsGrid.DataSource = bl.Product.ReadAll().ToList();
         }
 
@@ -49,23 +52,36 @@ namespace UI
                 }
                 else
                 {
-                    ProductsGrid.DataSource =
-                        bl.Product.ReadAll(p => p.Category == category).ToList();
+                    ProductsGrid.DataSource = bl.Product.ReadAll(p => p.Category == category).ToList();
                 }
             }
         }
 
         private void BtnAddProduct_Click(object sender, EventArgs e)
         {
-            new frmProduct().ShowDialog();
-            RefreshGrid();
+            // פתיחת הטופס והמתנה לסגירתו
+            if (new frmProduct().ShowDialog() == DialogResult.OK)
+            {
+                RefreshGrid();
+            }
         }
 
-        private void ProductsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void btnUpdateProduct_Click(object sender, EventArgs e)
         {
-
+            if (ProductsGrid.CurrentRow != null)
+            {
+                var product = (BO.Product)ProductsGrid.CurrentRow.DataBoundItem;
+                // שליחת ה-ID לטופס העדכון
+                if (new frmProduct(product.Id).ShowDialog() == DialogResult.OK)
+                {
+                    RefreshGrid();
+                }
+            }
+            else
+            {
+                MessageBox.Show("אנא בחרי מוצר מהרשימה לעדכון.", "שימי לב", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
-
 
         private void btnDeleteProduct_Click(object sender, EventArgs e)
         {
@@ -75,27 +91,40 @@ namespace UI
 
                 var result = MessageBox.Show(
                     $"האם למחוק את {product.Name}?",
-                    "אישור",
-                    MessageBoxButtons.YesNo);
+                    "אישור מחיקה",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
-                    bl.Product.Delete(product.Id);
-                    RefreshGrid();
+                    try
+                    {
+                        bl.Product.Delete(product.Id);
+                        RefreshGrid();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "שגיאה במחיקה");
+                    }
+                }
+            }
+        }
+       private void ProductsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                var column = ProductsGrid.Columns[e.ColumnIndex];
+                if (column is DataGridViewButtonColumn)
+                {
+                    btnUpdateProduct_Click(sender, EventArgs.Empty);
                 }
             }
         }
 
         private void ProductsGrid_MouseDoubleClick_1(object sender, MouseEventArgs e)
         {
-            if (ProductsGrid.CurrentRow != null)
-            {
-                var product = (BO.Product)ProductsGrid.CurrentRow.DataBoundItem;
-
-                new frmProduct(product.Id).ShowDialog();
-
-                RefreshGrid();
-            }
+            // פתיחת עדכון בדאבל קליק
+            btnUpdateProduct_Click(sender, e);
         }
 
         private void button2_Click(object sender, EventArgs e)
