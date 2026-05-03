@@ -7,57 +7,92 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BlApi;
 
 namespace UI
 {
     public partial class frmCustomer : Form
     {
-        BlApi.IBl bl = BlApi.Factory.Get();
+        private readonly IBl bl = Factory.Get();
+        private bool isViewMode = false;
+
         public frmCustomer()
         {
             InitializeComponent();
-
+            btnAddUpdate.Text = "הוסף לקוח";
         }
-        public frmCustomer(int id)
-        {
-            InitializeComponent();
-            var customer = bl.Customer.Read(id);
 
+        public frmCustomer(int id) : this()
+        {
+            LoadCustomerData(id);
+            btnAddUpdate.Text = "עדכן לקוח";
+            txtId.ReadOnly = true;
+        }
+
+        public frmCustomer(int id, bool isView) : this()
+        {
+            isViewMode = isView;
+            LoadCustomerData(id);
+
+            if (isViewMode)
+            {
+                btnAddUpdate.Text = "חזרה";
+                txtId.ReadOnly = true;
+                txtName.ReadOnly = true;
+                txtAddress.ReadOnly = true;
+                txtPhone.ReadOnly = true;
+            }
+        }
+
+        private void LoadCustomerData(int id)
+        {
+            var customer = bl.Customer.Read(id);
             txtId.Text = customer.Id.ToString();
-            txtId.ReadOnly = true; 
             txtName.Text = customer.Name;
             txtAddress.Text = customer.Address;
             txtPhone.Text = customer.Phone;
-
-            btnAddUpdate.Text = "עדכן לקוח";
         }
 
         private void btnAddUpdate_Click(object sender, EventArgs e)
         {
-            BO.Customer customer = new BO.Customer
+            if (isViewMode)
             {
-                Id = int.Parse(txtId.Text),
-                Name = txtName.Text,
-                Address = txtAddress.Text,
-                Phone = txtPhone.Text
-            };
+                this.Close();
+                return;
+            }
 
-            if (btnAddUpdate.Text == "עדכן לקוח")
+            try
             {
-                bl.Customer.Update(customer);
-                MessageBox.Show("הפרטים של הלקוח שונו בהצלחה!");
+                BO.Customer customer = new BO.Customer
+                {
+                    Id = int.Parse(txtId.Text),
+                    Name = txtName.Text,
+                    Address = txtAddress.Text,
+                    Phone = txtPhone.Text
+                };
+
+                if (btnAddUpdate.Text == "עדכן לקוח")
+                {
+                    bl.Customer.Update(customer);
+                    MessageBox.Show("הפרטים של הלקוח שונו בהצלחה!", "הצלחה", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    bl.Customer.Create(customer);
+                    MessageBox.Show("הלקוח התווסף לרשימה!", "הצלחה", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
-            else
+            catch (Exception ex)
             {
-                bl.Customer.Create(customer);
-                MessageBox.Show("הלקוח התווסף לרשימה!");
+                MessageBox.Show($"שגיאה: {ex.Message}", "שגיאה", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            this.Close();
         }
 
         private void frmCustomer_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

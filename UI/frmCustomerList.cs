@@ -114,5 +114,18 @@ namespace UI
         {
             this.Close();
         }
+
+        private void btnViewCustomer_Click(object sender, EventArgs e)
+        {
+            if (dgvCustomers.CurrentRow != null)
+            {
+                var customer = (BO.Customer)dgvCustomers.CurrentRow.DataBoundItem;
+                new frmCustomer(customer.Id, true).ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("אנא בחרי לקוח מהרשימה לצפייה.", "צפייה בלקוח", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }
