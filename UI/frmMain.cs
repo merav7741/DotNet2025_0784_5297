@@ -24,9 +24,7 @@ namespace UI
             {
                 if (c is Button btn)
                 {
-                    // עיצוב כשהעכבר עובר מעל הכפתור
                     btn.FlatAppearance.MouseOverBackColor = Color.LightGoldenrodYellow;
-                    // עיצוב כשלוקחים על הכפתור
                     btn.FlatAppearance.MouseDownBackColor = Color.Goldenrod;
                 }
             }
@@ -34,7 +32,6 @@ namespace UI
         private void btnProductsbtnProducts_Click(object sender, EventArgs e)
         {
             string secretCode = "1234";
-
             string input = Interaction.InputBox("כניסה למנהל בלבד: נא להקיש קוד גישה", "אבטחת מערכת", "");
 
             if (input == secretCode)

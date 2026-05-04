@@ -34,6 +34,7 @@
             btnDeleteProduct = new Button();
             button2 = new Button();
             btnUpdateProduct = new Button();
+            btnViewProduct = new Button();
             ((System.ComponentModel.ISupportInitialize)ProductsGrid).BeginInit();
             SuspendLayout();
             // 
@@ -99,11 +100,22 @@
             btnUpdateProduct.UseVisualStyleBackColor = true;
             btnUpdateProduct.Click += btnUpdateProduct_Click;
             // 
+            // btnViewProduct
+            // 
+            btnViewProduct.Location = new Point(229, 148);
+            btnViewProduct.Name = "btnViewProduct";
+            btnViewProduct.Size = new Size(136, 29);
+            btnViewProduct.TabIndex = 8;
+            btnViewProduct.Text = "צפיה במוצר";
+            btnViewProduct.UseVisualStyleBackColor = true;
+            btnViewProduct.Click += btnViewProduct_Click;
+            // 
             // ProductList
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnViewProduct);
             Controls.Add(btnUpdateProduct);
             Controls.Add(button2);
             Controls.Add(btnDeleteProduct);
@@ -124,5 +136,6 @@
         private Button btnDeleteProduct;
         private Button button2;
         private Button btnUpdateProduct;
+        private Button btnViewProduct;
     }
 }

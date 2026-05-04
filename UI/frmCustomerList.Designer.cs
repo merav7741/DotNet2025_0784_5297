@@ -35,6 +35,7 @@
             btnUpdateCustomer = new Button();
             btnAddCustomer = new Button();
             button1 = new Button();
+            btnViewCustomer = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
             SuspendLayout();
             // 
@@ -112,11 +113,22 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
+            // btnViewCustomer
+            // 
+            btnViewCustomer.Location = new Point(36, 187);
+            btnViewCustomer.Name = "btnViewCustomer";
+            btnViewCustomer.Size = new Size(141, 29);
+            btnViewCustomer.TabIndex = 5;
+            btnViewCustomer.Text = "צפיה בפרטי לקוח";
+            btnViewCustomer.UseVisualStyleBackColor = true;
+            btnViewCustomer.Click += btnViewCustomer_Click;
+            // 
             // frmCustomerList
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnViewCustomer);
             Controls.Add(button1);
             Controls.Add(btnAddCustomer);
             Controls.Add(btnUpdateCustomer);
@@ -141,5 +153,6 @@
         private Button btnUpdateCustomer;
         private Button btnAddCustomer;
         private Button button1;
+        private Button btnViewCustomer;
     }
 }

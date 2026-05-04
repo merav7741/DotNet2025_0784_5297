@@ -23,7 +23,6 @@ namespace UI
                                  .Cast<BO.Categories>()
                                  .ToList();
 
-            // הוספת אפשרות "הכל" לסינון
             categories.Insert(0, (BO.Categories)(-1));
             CategorySelector.DataSource = categories;
 
@@ -38,7 +37,6 @@ namespace UI
 
         private void RefreshGrid()
         {
-            // טעינה מחדש של כל המוצרים
             ProductsGrid.DataSource = bl.Product.ReadAll().ToList();
         }
 
@@ -59,7 +57,6 @@ namespace UI
 
         private void BtnAddProduct_Click(object sender, EventArgs e)
         {
-            // פתיחת הטופס והמתנה לסגירתו
             if (new frmProduct().ShowDialog() == DialogResult.OK)
             {
                 RefreshGrid();
@@ -71,7 +68,6 @@ namespace UI
             if (ProductsGrid.CurrentRow != null)
             {
                 var product = (BO.Product)ProductsGrid.CurrentRow.DataBoundItem;
-                // שליחת ה-ID לטופס העדכון
                 if (new frmProduct(product.Id).ShowDialog() == DialogResult.OK)
                 {
                     RefreshGrid();
@@ -109,7 +105,8 @@ namespace UI
                 }
             }
         }
-       private void ProductsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+
+        private void ProductsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
@@ -123,13 +120,25 @@ namespace UI
 
         private void ProductsGrid_MouseDoubleClick_1(object sender, MouseEventArgs e)
         {
-            // פתיחת עדכון בדאבל קליק
             btnUpdateProduct_Click(sender, e);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnViewProduct_Click(object sender, EventArgs e)
+        {
+            if (ProductsGrid.CurrentRow != null)
+            {
+                var product = (BO.Product)ProductsGrid.CurrentRow.DataBoundItem;
+                new frmProduct(product.Id, true).ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("אנא בחרי מוצר מהרשימה לצפייה.", "צפייה במוצר", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

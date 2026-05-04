@@ -15,54 +15,83 @@ namespace UI
     {
         private readonly IBl bl = Factory.Get();
         private int? productId = null;
+        private bool isViewMode = false;
 
         public frmProduct()
         {
             InitializeComponent();
             cmbCategory.DataSource = Enum.GetValues(typeof(BO.Categories));
-            btnSave.Text = "הוסף מוצר"; 
+            btnSave.Text = "הוסף מוצר";
         }
 
+        // בנאי לעדכון
         public frmProduct(int id) : this()
         {
             productId = id;
+            LoadProductData(id);
+            btnSave.Text = "עדכן מוצר";
+        }
+
+        // בנאי לצפייה בלבד
+        public frmProduct(int id, bool isView) : this()
+        {
+            productId = id;
+            isViewMode = isView;
+            LoadProductData(id);
+
+            if (isViewMode)
+            {
+                btnSave.Text = "חזרה";
+                // נעילת כל השדות לשינוי
+                txtName.ReadOnly = true;
+                txtPrice.ReadOnly = true;
+                txtStock.Text = "0"; // דוגמה לנעילה
+                txtStock.ReadOnly = true;
+                cmbCategory.Enabled = false;
+            }
+        }
+
+        private void LoadProductData(int id)
+        {
             var p = bl.Product.Read(id);
             txtName.Text = p.Name;
             txtPrice.Text = p.Price.ToString();
             txtStock.Text = p.CountStock.ToString();
             cmbCategory.SelectedItem = p.Category;
-            btnSave.Text = "עדכן מוצר";
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // אם אנחנו במצב צפייה, הכפתור פשוט סוגר את החלון
+            if (isViewMode)
+            {
+                this.Close();
+                return;
+            }
+
             try
             {
-                // 1. בדיקת חובה: שם מוצר
                 if (string.IsNullOrWhiteSpace(txtName.Text))
                 {
                     MessageBox.Show("חובה להזין שם מוצר", "שגיאת קלט", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // 2. בדיקת תקינות מחיר
                 if (!double.TryParse(txtPrice.Text, out double price) || price < 0)
                 {
                     MessageBox.Show("נא להזין מחיר תקין (מספר חיובי)", "שגיאת קלט", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // 3. בדיקת תקינות מלאי
                 if (!int.TryParse(txtStock.Text, out int stock) || stock < 0)
                 {
                     MessageBox.Show("נא להזין כמות מלאי תקינה", "שגיאת קלט", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // יצירת אובייקט המוצר לעדכון או הוספה
                 var p = new BO.Product
                 {
-                    Id = productId ?? 0, // אם זה חדש - 0, אם זה עדכון - ה-ID הקיים
+                    Id = productId ?? 0,
                     Name = txtName.Text,
                     Price = price,
                     CountStock = stock,
