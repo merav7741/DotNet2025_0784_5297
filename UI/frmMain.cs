@@ -81,8 +81,9 @@ namespace UI
             if (input == secretCode)
             {
                 MessageBox.Show("הקוד אומת בהצלחה!", "אישור", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //frmSaleList frm = new frmSaleList();
-                //frm.ShowDialog();
+
+                 frmSaleList frm = new frmSaleList();
+                frm.ShowDialog();
             }
             else if (string.IsNullOrEmpty(input)) { return; }
             else

@@ -73,7 +73,7 @@
             btnSales.Name = "btnSales";
             btnSales.Size = new Size(188, 29);
             btnSales.TabIndex = 0;
-            btnSales.Text = "ניהול מכירות";
+            btnSales.Text = "ניהול מבצעים";
             btnSales.UseVisualStyleBackColor = true;
             btnSales.Click += btnSales_Click;
             // 
@@ -95,11 +95,11 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = SystemColors.Window;
-            label1.Font = new Font("Rockwell Extra Bold", 20F, FontStyle.Bold);
+            label1.Font = new Font("Microsoft Sans Serif", 20F, FontStyle.Bold);
             label1.ForeColor = Color.Gold;
-            label1.Location = new Point(152, 134);
+            label1.Location = new Point(113, 140);
             label1.Name = "label1";
-            label1.Size = new Size(291, 40);
+            label1.Size = new Size(350, 39);
             label1.TabIndex = 1;
             label1.Text = "שלום לחנות התכשיטים";
             // 

@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <Id>2</Id>
-    <Name>יעל גרשון</Name>
-    <Address>מודיעין</Address>
-    <Phone>0556784421</Phone>
-  </Customer>
-  <Customer>
     <Id>3</Id>
     <Name>רחל קוק</Name>
     <Address>מיצד</Address>
@@ -41,5 +35,17 @@
     <Name>ישראל ישראלי</Name>
     <Address>נעלה</Address>
     <Phone>053311111</Phone>
+  </Customer>
+  <Customer>
+    <Id>222658791</Id>
+    <Name>טוטיוטה</Name>
+    <Address>בני ברק</Address>
+    <Phone>0533163578</Phone>
+  </Customer>
+  <Customer>
+    <Id>329395297</Id>
+    <Name>מלכה</Name>
+    <Address>ברכפלד</Address>
+    <Phone>0556727693</Phone>
   </Customer>
 </ArrayOfCustomer>
